@@ -8,9 +8,7 @@
 <style>
 html, body { max-width: 100vw; overflow-x: hidden !important; margin: 0; padding: 0; }
 * { box-sizing: border-box; }
-:root{
- --bg:#0b0f16;--surface:#121925;--line:#273449;--txt:#e5ebf4;--muted:#9aa9bd;--primary:#3b82f6;
-}
+:root{ --bg:#0b0f16;--surface:#121925;--line:#273449;--txt:#e5ebf4;--muted:#9aa9bd;--primary:#3b82f6; }
 body{background:var(--bg);color:var(--txt);font:15px/1.5 Inter,sans-serif;-webkit-font-smoothing:antialiased;}
 button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
 
@@ -100,7 +98,7 @@ button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-deco
    <button class="close-btn" onclick="closeVideo()">Kapat ✕</button>
   </div>
   <div class="video-container" id="videoContainer">
-    <!-- YouTube iframe buraya eklenecek -->
+    <!-- MegaPlay iframe buraya eklenecek -->
   </div>
  </div>
 </div>
@@ -142,35 +140,28 @@ window.onload = () => {
   }
 };
 
-// === ANİME VERİLERİ (YOUTUBE VIDEO ID'LERİ İLE) ===
-// Burası bizim özel listemiz. YouTube'dan bulduğun video ID'lerini buraya yapıştıracaksın.
-// Örnek: "dQw4w9WgXcQ" gibi.
+// === ANİME VERİLERİ (AniList ID'leri ile) ===
+// Bu liste, AniList API'sinden gelen animeleri temsil eder.
+// Her animenin bir AniList ID'si vardır (örneğin Attack on Titan: 16498).
 const animeDB = {
-  "Attack on Titan": {
-    seasons: [
-      {
-        title: "1. Sezon (25 Bölüm)",
-        episodes: [
-          // Örnek olarak Muse Asia'nın resmi AOT 1. Bölüm videosunun ID'sini koydum (Tahmini)
-          { name: "1. Bölüm: To You, in 2000 Years", youtubeId: "dQw4w9WgXcQ" }, 
-          { name: "2. Bölüm: That Day", youtubeId: "BURAYA_2_BOLUM_ID" },
-          // ... diğer bölümler
-        ]
-      }
-    ]
-  }
+  "Attack on Titan": { anilistId: 16498, totalEpisodes: 25 },
+  "One Piece": { anilistId: 21, totalEpisodes: 1000 }, // Örnek
+  "Jujutsu Kaisen": { anilistId: 113415, totalEpisodes: 24 },
+  "Demon Slayer": { anilistId: 101922, totalEpisodes: 26 },
+  "My Hero Academia": { anilistId: 21459, totalEpisodes: 13 }
 };
 
 function initApp() {
   const grid = document.getElementById('catalogGrid');
   let html = '';
-  // Sadece animeDB'de olanları gösterelim
   for (let key in animeDB) {
+    const anime = animeDB[key];
+    // Kapak resmi için AniList CDN kullanıyoruz (ID'ye göre)
     html += `
       <article class="anime-card" onclick="openAnime('${key}')">
-        <img class="cover" src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx16498-C6FPmWm59CyP.jpg" alt="${key}">
+        <img class="cover" src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx${anime.anilistId}.jpg" alt="${key}" onerror="this.src='https://via.placeholder.com/300x400?text=AniTürk'">
         <h3>${key}</h3>
-        <div class="subline">Anime</div>
+        <div class="subline">${anime.totalEpisodes} Bölüm</div>
       </article>
     `;
   }
@@ -178,51 +169,47 @@ function initApp() {
 }
 
 function openAnime(animeTitle) {
-  const dbData = animeDB[animeTitle];
-  if (!dbData) return;
+  const anime = animeDB[animeTitle];
+  if (!anime) return;
 
-  // Bölüm listesini göster
+  // Bölüm listesini oluştur
   let html = '';
-  dbData.seasons.forEach((season, sIndex) => {
-    season.episodes.forEach((ep, eIndex) => {
-      html += `
-        <div class="ep-item" onclick="playVideo('${animeTitle}', ${sIndex}, ${eIndex})">
-          <div class="ep-name">${ep.name}</div>
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="#93c5fd"><path d="M8 5v14l11-7z"/></svg>
-        </div>
-      `;
-    });
-  });
-
-  // Basit bir modal (bölüm listesi için) - Şimdilik alert ile gösterelim, istersen modal yaparız
-  // Ama senin istediğin gibi "Bölümler" butonu mantığı için bunu modal'a çevireceğiz.
-  // Şimdilik hızlıca ilk bölümü oynatalım.
-  playVideo(animeTitle, 0, 0);
-}
-
-// === YOUTUBE IFRAME İLE VİDEO OYNATMA ===
-function playVideo(animeTitle, seasonIndex, epIndex) {
-  const dbData = animeDB[animeTitle];
-  const ep = dbData.seasons[seasonIndex].episodes[epIndex];
-  
-  if (ep.youtubeId.includes("BURAYA_")) {
-    alert("Aga bu bölümün YouTube ID'si henüz eklenmemiş!");
-    return;
+  for (let i = 1; i <= anime.totalEpisodes; i++) {
+    html += `
+      <div class="ep-item" onclick="playEpisode('${animeTitle}', ${i})">
+        <div class="ep-name">${i}. Bölüm</div>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="#93c5fd"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    `;
   }
 
-  document.getElementById('vTitle').innerText = animeTitle + " - " + ep.name;
+  // Bölüm listesini modal olarak göster
+  const modal = document.getElementById('videoPlayerModal');
+  document.getElementById('vTitle').innerText = animeTitle + " - Bölümler";
+  document.getElementById('videoContainer').innerHTML = `<div class="episode-list" style="max-height: 60vh; overflow-y: auto;">${html}</div>`;
+  modal.classList.add('show');
+}
+
+// === MEGAPLAY IFRAME İLE VİDEO OYNATMA ===
+function playEpisode(animeTitle, episodeNumber) {
+  const anime = animeDB[animeTitle];
+  if (!anime) return;
+
+  document.getElementById('vTitle').innerText = animeTitle + " - " + episodeNumber + ". Bölüm";
   
   const container = document.getElementById('videoContainer');
-  // YouTube iframe'ini oluştur
+  
+  // MegaPlay iframe URL'si (AniList ID ile)
+  // Örnek: https://megaplay.buzz/stream/ani/16498/1/sub
+  const iframeUrl = `https://megaplay.buzz/stream/ani/${anime.anilistId}/${episodeNumber}/sub`;
+  
   container.innerHTML = `
     <iframe 
-      src="https://www.youtube.com/embed/${ep.youtubeId}?autoplay=1&rel=0" 
-      allow="autoplay; encrypted-media" 
+      src="${iframeUrl}" 
+      allow="autoplay; fullscreen; encrypted-media" 
       allowfullscreen>
     </iframe>
   `;
-  
-  document.getElementById('videoPlayerModal').classList.add('show');
 }
 
 function closeVideo() {
