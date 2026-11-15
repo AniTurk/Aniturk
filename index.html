@@ -74,10 +74,15 @@ button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-deco
 .btn-episodes{background:#1e293b;color:#93c5fd;border:1px solid #334155;border-radius:8px;padding:14px 24px;font-size:16px;font-weight:700;cursor:pointer;transition:0.2s}
 .btn-episodes:hover{background:#334155}
 
-/* === BÖLÜM LİSTESİ === */
-.episode-list{display:flex;flex-direction:column;gap:10px;margin-top:20px}
-.ep-item{background:#151e2b;border:1px solid #273449;padding:15px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:0.2s}
-.ep-item:hover{border-color:var(--primary);background:#1a2538}
+/* === BÖLÜM LİSTESİ (AKORDEON) === */
+.episode-list{display:flex;flex-direction:column;gap:8px;margin-top:20px}
+.season-group{border:1px solid #273449;border-radius:8px;overflow:hidden;background:#151e2b;}
+.season-header{background:#1a2538;padding:15px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:0.2s;color:#93c5fd;}
+.season-header:hover{background:#202d40;}
+.season-content{display:none;padding:10px;border-top:1px solid #273449;}
+.season-content.active{display:block;}
+.ep-item{background:#0f1521;border:1px solid #1e293b;padding:12px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;margin-bottom:8px;transition:0.2s}
+.ep-item:hover{border-color:var(--primary);background:#172233}
 .ep-name{font-weight:600;font-size:14px}
 .ep-sub{font-size:12px;color:#93c5fd;margin-top:4px;display:flex;gap:10px}
 
@@ -218,7 +223,6 @@ function registerUser() {
   }
   if (pass !== confirm) return alert('Şifreler uyuşmuyor!');
 
-  // Kaydet ve giriş yap
   localStorage.setItem('aniturk_user', JSON.stringify({name: name, pass: pass}));
   localStorage.setItem('aniturk_history', 'Henüz bir şey izlemedin.');
   
@@ -227,7 +231,6 @@ function registerUser() {
   initApp();
 }
 
-// Oturum kontrolü
 window.onload = () => {
   const user = JSON.parse(localStorage.getItem('aniturk_user'));
   if (user) {
@@ -243,14 +246,74 @@ const FIELDS=`id title { romaji english native } coverImage { extraLarge large m
 const QUERY=`query ($page:Int,$perPage:Int,$sort:[MediaSort],$search:String) { Page(page:$page,perPage:$perPage) { media(type:ANIME,isAdult:false,sort:$sort,search:$search) { ${FIELDS} } } }`;
 let detailCache={};
 
-// TEST VİDEOLARI (Kendi linklerini buraya ekleyebilirsin)
-const VIDEO_SOURCES = [
-  "https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
-  "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-  "https://archive.org/download/Astro-Boy-2003-English/01%20-%20Astro%20Boy%20-%20Episode%201.mp4"
-];
+// ==========================================
+// !!! SEZONLU ANİME VERİTABANI !!!
+// ==========================================
+const animeDB = {
+  "Attack on Titan": {
+    seasons: [
+      {
+        title: "1. Sezon (25 Bölüm)",
+        episodes: [
+          { name: "1. Bölüm: To You, in 2000 Years", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" }, // İlk bölüme test videosu
+          { name: "2. Bölüm: That Day", url: "BURAYA_1_SEZON_2_BOLUM_LINKI" },
+          { name: "3. Bölüm: A Dim Light Amid Despair", url: "BURAYA_1_SEZON_3_BOLUM_LINKI" },
+          { name: "4. Bölüm: The Night of the Disbanding", url: "BURAYA_1_SEZON_4_BOLUM_LINKI" },
+          { name: "5. Bölüm: First Battle", url: "BURAYA_1_SEZON_5_BOLUM_LINKI" },
+          { name: "6. Bölüm: The World the Girl Saw", url: "BURAYA_1_SEZON_6_BOLUM_LINKI" },
+          { name: "7. Bölüm: Small Blade", url: "BURAYA_1_SEZON_7_BOLUM_LINKI" },
+          { name: "8. Bölüm: I Can Hear His Heartbeat", url: "BURAYA_1_SEZON_8_BOLUM_LINKI" },
+          { name: "9. Bölüm: Whereabouts of His Left Arm", url: "BURAYA_1_SEZON_9_BOLUM_LINKI" },
+          { name: "10. Bölüm: Response", url: "BURAYA_1_SEZON_10_BOLUM_LINKI" },
+          { name: "11. Bölüm: Idol", url: "BURAYA_1_SEZON_11_BOLUM_LINKI" },
+          { name: "12. Bölüm: Wound", url: "BURAYA_1_SEZON_12_BOLUM_LINKI" },
+          { name: "13. Bölüm: Primal Desires", url: "BURAYA_1_SEZON_13_BOLUM_LINKI" },
+          { name: "14. Bölüm: Still Can't See", url: "BURAYA_1_SEZON_14_BOLUM_LINKI" },
+          { name: "15. Bölüm: Special Operations Squad", url: "BURAYA_1_SEZON_15_BOLUM_LINKI" },
+          { name: "16. Bölüm: What Needs to be Done Now", url: "BURAYA_1_SEZON_16_BOLUM_LINKI" },
+          { name: "17. Bölüm: Female Titan", url: "BURAYA_1_SEZON_17_BOLUM_LINKI" },
+          { name: "18. Bölüm: Forest of Giant Trees", url: "BURAYA_1_SEZON_18_BOLUM_LINKI" },
+          { name: "19. Bölüm: Bite", url: "BURAYA_1_SEZON_19_BOLUM_LINKI" },
+          { name: "20. Bölüm: Erwin Smith", url: "BURAYA_1_SEZON_20_BOLUM_LINKI" },
+          { name: "21. Bölüm: Crushing Blow", url: "BURAYA_1_SEZON_21_BOLUM_LINKI" },
+          { name: "22. Bölüm: The Defeated", url: "BURAYA_1_SEZON_22_BOLUM_LINKI" },
+          { name: "23. Bölüm: Smile", url: "BURAYA_1_SEZON_23_BOLUM_LINKI" },
+          { name: "24. Bölüm: Mercy", url: "BURAYA_1_SEZON_24_BOLUM_LINKI" },
+          { name: "25. Bölüm: Wall", url: "BURAYA_1_SEZON_25_BOLUM_LINKI" }
+        ]
+      },
+      {
+        title: "2. Sezon (12 Bölüm)",
+        episodes: [
+          { name: "1. Bölüm: Beast Titan", url: "BURAYA_2_SEZON_1_BOLUM_LINKI" },
+          { name: "2. Bölüm: I'm Home", url: "BURAYA_2_SEZON_2_BOLUM_LINKI" },
+          { name: "3. Bölüm: Southwestward", url: "BURAYA_2_SEZON_3_BOLUM_LINKI" },
+          { name: "4. Bölüm: Soldier", url: "BURAYA_2_SEZON_4_BOLUM_LINKI" },
+          { name: "5. Bölüm: Historia", url: "BURAYA_2_SEZON_5_BOLUM_LINKI" },
+          { name: "6. Bölüm: Warrior", url: "BURAYA_2_SEZON_6_BOLUM_LINKI" },
+          { name: "7. Bölüm: Close Combat", url: "BURAYA_2_SEZON_7_BOLUM_LINKI" },
+          { name: "8. Bölüm: The Hunters", url: "BURAYA_2_SEZON_8_BOLUM_LINKI" },
+          { name: "9. Bölüm: Opening", url: "BURAYA_2_SEZON_9_BOLUM_LINKI" },
+          { name: "10. Bölüm: Children", url: "BURAYA_2_SEZON_10_BOLUM_LINKI" },
+          { name: "11. Bölüm: Charge", url: "BURAYA_2_SEZON_11_BOLUM_LINKI" },
+          { name: "12. Bölüm: Scream", url: "BURAYA_2_SEZON_12_BOLUM_LINKI" }
+        ]
+      }
+    ]
+  }
+};
 
-function getVideoUrl() { return VIDEO_SOURCES[Math.floor(Math.random() * VIDEO_SOURCES.length)]; }
+function findAnimeInDB(anilistTitle) {
+  const cleanTitle = anilistTitle.toLowerCase().trim();
+  for (let key in animeDB) {
+    if (cleanTitle.includes(key.toLowerCase()) || (key === "Attack on Titan" && cleanTitle.includes("shingeki"))) {
+      return animeDB[key];
+    }
+  }
+  return null;
+}
+// ==========================================
+
 function title(a){return a.title?.english||a.title?.romaji||'İsimsiz anime'}
 function safeText(s){return String(s||'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim()}
 function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -271,7 +334,6 @@ function makeCard(a){
 }
 
 async function initApp(){
-  // Profil bilgilerini yükle
   const user = JSON.parse(localStorage.getItem('aniturk_user'));
   document.getElementById('userName').innerText = user.name;
   document.getElementById('userAvatar').innerText = user.name.charAt(0).toUpperCase();
@@ -279,7 +341,6 @@ async function initApp(){
   const history = localStorage.getItem('aniturk_history');
   if(history) document.getElementById('userHistory').innerText = "Son izlenen: " + history;
 
-  // Animeleri yükle
   try{
    const trend = await getList('TRENDING_DESC', 12);
    document.getElementById('trendingRail').innerHTML = trend.map(makeCard).join('');
@@ -288,13 +349,36 @@ async function initApp(){
   }catch(e){ console.log(e); }
 }
 
-// === 3. DETAY VE BÖLÜMLER ===
 function openDetail(id){
  const a=detailCache[id];
  const img=a.coverImage?.extraLarge||a.coverImage?.large||'',banner=a.bannerImage||img;
  document.getElementById('dBanner').style.backgroundImage=`linear-gradient(0deg,#0f1521,transparent),url("${banner}")`;
  const animeTitle = title(a);
  
+ const dbData = findAnimeInDB(animeTitle);
+ 
+ let actionButtons = '';
+ if (dbData) {
+   // Toplam bölüm sayısını hesapla
+   let totalEps = 0;
+   dbData.seasons.forEach(s => totalEps += s.episodes.length);
+   
+   actionButtons = `
+     <button class="btn-play" onclick="playVideo('${esc(animeTitle)}', 0, 0)">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Hemen İzle
+     </button>
+     <button class="btn-episodes" onclick="openEpisodes('${esc(animeTitle)}')">
+        Bölümler (${totalEps})
+     </button>
+   `;
+ } else {
+   actionButtons = `
+     <div style="background:#331a1a; border:1px solid #662222; color:#ff8888; padding:12px 20px; border-radius:8px; font-weight:600; font-size:14px;">
+        ⚠️ Bu anime için henüz video eklenmedi.
+     </div>
+   `;
+ }
+
  document.getElementById('dInner').innerHTML=`
   <img class="dialog-cover" src="${img}">
   <h2>${esc(animeTitle)}</h2>
@@ -303,52 +387,95 @@ function openDetail(id){
   <div class="dialog-desc">${safeText(a.description)||'Açıklama yok.'}</div>
   
   <div class="detail-actions">
-   <button class="btn-play" onclick="playVideo('${esc(animeTitle)}', '1. Bölüm')">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> İzle
-   </button>
-   <button class="btn-episodes" onclick="openEpisodes('${esc(animeTitle)}', ${a.episodes||12})">
-      Bölümler
-   </button>
+   ${actionButtons}
   </div>`;
  document.getElementById('detailModal').classList.add('show');
 }
 
 function closeModal(){document.getElementById('detailModal').classList.remove('show')}
 
-function openEpisodes(animeTitle, epCount){
+// Akordeon mantığı ile bölümleri listeleme
+function openEpisodes(animeTitle){
+  const dbData = findAnimeInDB(animeTitle);
+  if(!dbData) return;
+
   const list = document.getElementById('episodeList');
   let html = '';
-  // Ekranda çok uzun olmasın diye max 12 bölüm gösteriyoruz (test için)
-  const limit = Math.min(epCount, 12); 
-  for(let i=1; i<=limit; i++){
+  
+  dbData.seasons.forEach((season, sIndex) => {
     html += `
-      <div class="ep-item" onclick="playVideo('${esc(animeTitle)}', '${i}. Bölüm')">
-        <div>
-          <div class="ep-name">${i}. Bölüm: Maceranın Başlangıcı</div>
-          <div class="ep-sub"><span>🇹🇷 Türkçe Altyazı</span> <span>1080p</span></div>
+      <div class="season-group">
+        <div class="season-header" onclick="toggleSeason(this)">
+          <span>${season.title}</span>
+          <span class="arrow">▼</span>
         </div>
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="#93c5fd"><path d="M8 5v14l11-7z"/></svg>
-      </div>
+        <div class="season-content">
     `;
-  }
+    
+    season.episodes.forEach((ep, eIndex) => {
+      html += `
+        <div class="ep-item" onclick="playVideo('${esc(animeTitle)}', ${sIndex}, ${eIndex})">
+          <div>
+            <div class="ep-name">${ep.name}</div>
+            <div class="ep-sub"><span>🇹🇷 Türkçe Altyazı</span> <span>1080p</span></div>
+          </div>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="#93c5fd"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      `;
+    });
+    
+    html += `</div></div>`;
+  });
+  
   list.innerHTML = html;
+  
+  // İlk sezonu varsayılan olarak aç
+  const firstSeason = list.querySelector('.season-content');
+  if(firstSeason) firstSeason.classList.add('active');
+
   document.getElementById('episodesModal').classList.add('show');
+}
+
+function toggleSeason(header) {
+  const content = header.nextElementSibling;
+  const arrow = header.querySelector('.arrow');
+  
+  if (content.classList.contains('active')) {
+    content.classList.remove('active');
+    arrow.style.transform = 'rotate(0deg)';
+  } else {
+    // Diğerlerini kapat (isteğe bağlı, istersen bunu silebilirsin)
+    document.querySelectorAll('.season-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.arrow').forEach(a => a.style.transform = 'rotate(0deg)');
+    
+    content.classList.add('active');
+    arrow.style.transform = 'rotate(180deg)';
+  }
 }
 
 function closeEpisodes(){document.getElementById('episodesModal').classList.remove('show')}
 
-// === 4. VİDEO OYNATMA VE GEÇMİŞ KAYDI ===
-function playVideo(animeTitle, epName){
+function playVideo(animeTitle, seasonIndex, epIndex){
+  const dbData = findAnimeInDB(animeTitle);
+  if(!dbData || !dbData.seasons[seasonIndex] || !dbData.seasons[seasonIndex].episodes[epIndex]) return;
+
+  const ep = dbData.seasons[seasonIndex].episodes[epIndex];
+  
+  if(ep.url.includes("BURAYA_")) {
+    alert("Aga bu bölümün video linki henüz eklenmemiş! Kodu düzenleyip linki yapıştırman lazım.");
+    return;
+  }
+
   closeModal();
   closeEpisodes();
   
-  // Geçmişi kaydet
-  localStorage.setItem('aniturk_history', animeTitle + " - " + epName);
-  document.getElementById('userHistory').innerText = "Son izlenen: " + animeTitle + " - " + epName;
+  localStorage.setItem('aniturk_history', animeTitle + " - " + ep.name);
+  document.getElementById('userHistory').innerText = "Son izlenen: " + animeTitle + " - " + ep.name;
 
-  document.getElementById('vTitle').innerText = animeTitle + " - " + epName;
+  document.getElementById('vTitle').innerText = animeTitle + " - " + ep.name;
   const video = document.getElementById('mainVideo');
-  video.src = getVideoUrl();
+  
+  video.src = ep.url;
   video.load();
   
   document.getElementById('videoPlayerModal').classList.add('show');
@@ -364,4 +491,4 @@ function closeVideo(){
 
 </script>
 </body>
- </html>
+</html>
