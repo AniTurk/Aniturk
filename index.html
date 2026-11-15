@@ -31,24 +31,24 @@ button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-deco
 .catalog-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:23px 16px}
 .anime-card{cursor:pointer}
 .cover{width:100%;height:270px;object-fit:cover;border-radius:6px;background:#171723;}
-.anime-card h3{font-size:14px;margin:9px 0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.anime-card h3{font-size:14px;margin:9px 0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; color: #fff;}
 .subline{color:#aaa;font-size:11px}
 
 /* MODAL VE OYNATICI */
 .modal{position:fixed;inset:0;z-index:50;background:#000c;display:none;place-items:center;padding:16px;backdrop-filter:blur(10px);}
 .modal.show{display:grid;}
 .dialog{width:100%;max-width:850px;max-height:90vh;overflow-y:auto;background:#0f1521;border:1px solid #34445b;border-radius:12px;position:relative;}
-.dialog-header{padding:16px 24px;background:#0f1521;border-bottom:1px solid #1e293b;display:flex;justify-content:space-between;align-items:center;}
-.dialog-header h3{margin:0;font-size:16px;}
-.close-btn{background:#ef4444;color:white;border:none;border-radius:6px;padding:6px 12px;font-weight:600;cursor:pointer;}
+.dialog-header{padding:16px 24px;background:#0f1521;border-bottom:1px solid #1e293b;display:flex;justify-content:space-between;align-items:center; position: sticky; top: 0; z-index: 10; border-radius: 12px 12px 0 0;}
+.dialog-header h3{margin:0;font-size:16px; color: #fff;}
+.close-btn{background:#ef4444;color:white;border:none;border-radius:6px;padding:8px 16px;font-weight:600;cursor:pointer;}
 .video-container{position:relative;width:100%;padding-top:56.25%;background:#000;}
 .video-container iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
 
 /* BÖLÜM LİSTESİ */
-.episode-list{padding:20px;display:flex;flex-direction:column;gap:8px;}
-.ep-item{background:#151e2b;border:1px solid #273449;padding:12px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.episode-list{padding:20px;display:flex;flex-direction:column;gap:10px; max-height: 60vh; overflow-y: auto;}
+.ep-item{background:#151e2b;border:1px solid #273449;padding:14px 16px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;cursor:pointer; transition: 0.2s;}
 .ep-item:hover{border-color:var(--primary);background:#172233;}
-.ep-name{font-weight:600;font-size:14px;}
+.ep-name{font-weight:600;font-size:15px; color: #e5ebf4;}
 
 @media(max-width:1000px){.catalog-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:650px){
@@ -90,15 +90,15 @@ button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-deco
   </main>
 </div>
 
-<!-- VİDEO OYNATICI MODALI -->
+<!-- MODAL (Bölüm Listesi ve Video Oynatıcı) -->
 <div class="modal" id="videoPlayerModal" onclick="if(event.target===this)closeVideo()">
  <div class="dialog">
   <div class="dialog-header">
    <h3 id="vTitle">Anime Adı</h3>
    <button class="close-btn" onclick="closeVideo()">Kapat ✕</button>
   </div>
-  <div class="video-container" id="videoContainer">
-    <!-- iframe buraya eklenecek -->
+  <div id="videoContainer">
+    <!-- İçerik dinamik olarak eklenecek -->
   </div>
  </div>
 </div>
@@ -140,13 +140,13 @@ window.onload = () => {
   }
 };
 
-// === ANİME VERİLERİ (AniList ID'leri ile) ===
+// === ANİME VERİLERİ ===
 const animeDB = {
-  "Attack on Titan": { anilistId: 16498, totalEpisodes: 25 },
-  "One Piece": { anilistId: 21, totalEpisodes: 1000 },
-  "Jujutsu Kaisen": { anilistId: 113415, totalEpisodes: 24 },
-  "Demon Slayer": { anilistId: 101922, totalEpisodes: 26 },
-  "My Hero Academia": { anilistId: 21459, totalEpisodes: 13 }
+  "Attack on Titan": { anilistId: 16498, totalEpisodes: 25, imageUrl: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx16498-C6FPmWm59CyP.jpg" },
+  "One Piece": { anilistId: 21, totalEpisodes: 1000, imageUrl: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21-ELWl3xN7xN7x.jpg" },
+  "Jujutsu Kaisen": { anilistId: 113415, totalEpisodes: 24, imageUrl: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx113415-9yG7h4yWjKqM.jpg" },
+  "Demon Slayer": { anilistId: 101922, totalEpisodes: 26, imageUrl: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx101922-9yG7h4yWjKqM.jpg" },
+  "My Hero Academia": { anilistId: 21459, totalEpisodes: 13, imageUrl: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21459-9yG7h4yWjKqM.jpg" }
 };
 
 function initApp() {
@@ -154,9 +154,11 @@ function initApp() {
   let html = '';
   for (let key in animeDB) {
     const anime = animeDB[key];
+    // Görselleri proxy üzerinden yüklüyoruz (CORS ve engellemeleri aşmak için)
+    const proxiedImage = `https://images.weserv.nl/?url=${encodeURIComponent(anime.imageUrl)}`;
     html += `
       <article class="anime-card" onclick="openAnime('${key}')">
-        <img class="cover" src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx${anime.anilistId}.jpg" alt="${key}" onerror="this.src='https://via.placeholder.com/300x400?text=AniTürk'">
+        <img class="cover" src="${proxiedImage}" alt="${key}" onerror="this.src='https://via.placeholder.com/300x400/121925/3b82f6?text=AniT%C3%BCrk'">
         <h3>${key}</h3>
         <div class="subline">${anime.totalEpisodes} Bölüm</div>
       </article>
@@ -169,23 +171,24 @@ function openAnime(animeTitle) {
   const anime = animeDB[animeTitle];
   if (!anime) return;
 
-  let html = '';
+  let html = '<div class="episode-list">';
   for (let i = 1; i <= anime.totalEpisodes; i++) {
     html += `
       <div class="ep-item" onclick="playEpisode('${animeTitle}', ${i})">
         <div class="ep-name">${i}. Bölüm</div>
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="#93c5fd"><path d="M8 5v14l11-7z"/></svg>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="#3b82f6"><path d="M8 5v14l11-7z"/></svg>
       </div>
     `;
   }
+  html += '</div>';
 
   const modal = document.getElementById('videoPlayerModal');
   document.getElementById('vTitle').innerText = animeTitle + " - Bölümler";
-  document.getElementById('videoContainer').innerHTML = `<div class="episode-list" style="max-height: 60vh; overflow-y: auto;">${html}</div>`;
+  document.getElementById('videoContainer').innerHTML = html;
   modal.classList.add('show');
 }
 
-// === VIBEPLAYER IFRAME İLE VİDEO OYNATMA ===
+// === MEGAPLAY IFRAME İLE VİDEO OYNATMA ===
 function playEpisode(animeTitle, episodeNumber) {
   const anime = animeDB[animeTitle];
   if (!anime) return;
@@ -194,16 +197,17 @@ function playEpisode(animeTitle, episodeNumber) {
   
   const container = document.getElementById('videoContainer');
   
-  // VibePlayer iframe URL'si (AniList ID ile)
-  // Örnek: https://vibeplayer.site/embed/ani/16498/1/sub
-  const iframeUrl = `https://vibeplayer.site/embed/ani/${anime.anilistId}/${episodeNumber}/sub`;
+  // MegaPlay iframe URL'si (AniList ID ile)
+  const iframeUrl = `https://megaplay.buzz/stream/ani/${anime.anilistId}/${episodeNumber}/sub`;
   
   container.innerHTML = `
-    <iframe 
-      src="${iframeUrl}" 
-      allow="autoplay; fullscreen; encrypted-media" 
-      allowfullscreen>
-    </iframe>
+    <div class="video-container">
+      <iframe 
+        src="${iframeUrl}" 
+        allow="autoplay; fullscreen; encrypted-media" 
+        allowfullscreen>
+      </iframe>
+    </div>
   `;
 }
 
