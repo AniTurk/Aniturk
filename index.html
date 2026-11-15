@@ -6,15 +6,14 @@
 <meta name="theme-color" content="#0b0f16">
 <title>AniTürk — Anime İzle</title>
 <style>
-/* === ANA TEMA (Gece Laciverti) === */
 :root{
  --bg:#0b0f16;--surface:#121925;--surface2:#192333;--surface3:#202d40;
  --line:#273449;--txt:#e5ebf4;--muted:#9aa9bd;
- --purple:#789ac7;--pink:#789ac7;--cyan:#a8c5ed;
+ --primary:#4f8ce8; /* Daha canlı bir mavi */
  --shadow:0 14px 40px #02071199
 }
 *{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
 
 /* === ÜST BAR === */
@@ -50,47 +49,70 @@ button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-deco
 .more{font-size:12px;color:#a9c4e8;font-weight:800;background:none;border:0}
 .rail{display:grid;grid-auto-flow:column;grid-auto-columns:190px;gap:15px;overflow-x:auto;padding:2px 2px 12px}
 .anime-card{min-width:0;cursor:pointer;position:relative}
-.cover{width:100%;height:270px;object-fit:cover;display:block;border-radius:3px;background:#171723;transition:filter .15s}
-.anime-card:hover .cover{filter:brightness(1.12)}
+.cover{width:100%;height:270px;object-fit:cover;display:block;border-radius:6px;background:#171723;transition:transform .2s, filter .2s}
+.anime-card:hover .cover{filter:brightness(1.1);transform:translateY(-3px)}
 .cover-wrap{position:relative}
-.score{position:absolute;top:8px;left:8px;background:#0b1422e8;border:1px solid #344b69;border-radius:2px;padding:4px 7px;font-size:11px;font-weight:850}
-.heart{position:absolute;right:8px;top:8px;width:31px;height:31px;border-radius:3px;background:#111e;border:0;color:white;font-size:17px;display:grid;place-items:center}
-.heart.on{color:#a9c4e8;background:#1d2c42}
-.anime-card h3{font-size:14px;line-height:1.3;margin:9px 1px 3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:650}
+.score{position:absolute;top:8px;left:8px;background:#0b1422e8;border:1px solid #344b69;border-radius:4px;padding:4px 7px;font-size:11px;font-weight:850}
+.anime-card h3{font-size:14px;line-height:1.3;margin:9px 1px 3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:650;color:#fff}
 .subline{color:#aaa;font-size:11px;margin-left:1px}
 .catalog-tools{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0}
-.field{background:#151e2b;color:white;border:1px solid #2c3b51;border-radius:5px;padding:11px 13px;outline:none}
+.field{background:#151e2b;color:white;border:1px solid #2c3b51;border-radius:6px;padding:11px 13px;outline:none}
 .field.search{flex:1;min-width:180px}
 .catalog-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:23px 16px}
 .empty{grid-column:1/-1;padding:40px;text-align:center;background:var(--surface);border:1px solid var(--line);border-radius:15px;color:var(--muted)}
 .loading{color:var(--muted);text-align:center;padding:28px}
 
-/* === MODAL (DETAY VE VİDEO OYNATICI) === */
-.modal{position:fixed;inset:0;z-index:50;background:#000d;display:none;place-items:center;padding:16px;backdrop-filter:blur(8px)}
-.modal.show{display:grid}
-.dialog{width:min(850px,100%);max-height:90vh;overflow:auto;border:1px solid #34445b;background:#121925;border-radius:5px;box-shadow:var(--shadow);position:relative}
-.dialog-banner{height:220px;background-size:cover;background-position:center;position:relative}
-.dialog-banner:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#121925,transparent 80%)}
-.dialog-inner{padding:0 25px 25px;position:relative;margin-top:-48px}
-.dialog-cover{width:112px;height:155px;object-fit:cover;border:3px solid #121925;border-radius:3px;float:left;margin-right:18px}
-.dialog h2{font-size:25px;margin:0 0 5px}
-.dialog .romaji{color:var(--muted);font-size:12px}
-.dialog-desc{clear:both;padding-top:18px;color:#d0d0d0;font-size:13px;line-height:1.65}
-.dialog-stats{display:flex;gap:18px;flex-wrap:wrap;color:#d9d3e5;font-size:12px;margin:12px 0}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
-.chip{background:#1d2c42;color:#b9d0ef;border-radius:3px;padding:4px 8px;font-size:11px}
-.close{position:absolute;right:14px;top:14px;z-index:3;border:1px solid #ffffff55;background:#090912c9;color:white;border-radius:5px;padding:7px 11px}
-.detail-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
-.detail-link{display:inline-block;background:#192333;border:1px solid #3a4c65;border-radius:4px;padding:10px 13px;font-size:12px;font-weight:800;cursor:pointer}
-.detail-link.primary{background:#789ac7;color:#07101d;border:0}
+/* === DETAY MODALI (MODERN) === */
+.modal{position:fixed;inset:0;z-index:50;background:#000c;display:none;place-items:center;padding:16px;backdrop-filter:blur(10px)}
+.modal.show{display:grid; animation: fadeIn .2s ease}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.dialog{width:min(850px,100%);max-height:90vh;overflow:auto;border:1px solid #34445b;background:#0f1521;border-radius:12px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);position:relative}
+.dialog-banner{height:240px;background-size:cover;background-position:center;position:relative}
+.dialog-banner:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#0f1521,transparent 80%)}
+.dialog-inner{padding:0 30px 30px;position:relative;margin-top:-60px}
+.dialog-cover{width:130px;height:185px;object-fit:cover;border:3px solid #0f1521;border-radius:8px;float:left;margin-right:20px;box-shadow:0 10px 20px rgba(0,0,0,0.5)}
+.dialog h2{font-size:28px;margin:0 0 5px; font-weight:800; letter-spacing:-0.5px}
+.dialog .romaji{color:var(--muted);font-size:13px; margin-bottom:12px}
+.dialog-desc{clear:both;padding-top:25px;color:#cbd5e1;font-size:14px;line-height:1.6;
+ /* Uzun açıklamayı 3 satırla sınırla */
+ display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; margin-bottom:20px; text-align:justify;}
+.dialog-stats{display:flex;gap:15px;flex-wrap:wrap;color:#94a3b8;font-size:13px;margin:12px 0; font-weight:500}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
+.chip{background:#1e293b;color:#93c5fd;border-radius:4px;padding:5px 10px;font-size:12px; font-weight:600; border: 1px solid #334155}
+.close{position:absolute;right:16px;top:16px;z-index:3;border:1px solid #ffffff33;background:#090912c9;color:white;border-radius:8px;padding:8px 14px; font-weight:600; transition: background 0.2s}
+.close:hover{background:#ff4757; border-color:#ff4757}
 
-/* === ÖZEL VİDEO OYNATICI TASARIMI === */
-#videoPlayerModal .dialog{width:min(1100px,100%);background:#000;border:1px solid #333;overflow:hidden}
-.player-header{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:#111;color:white}
-.player-header h3{margin:0;font-size:16px}
+/* === MODERN İZLE BUTONU === */
+.detail-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px; align-items:center}
+.btn-play{
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.btn-play:hover {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+}
+.btn-play svg { width: 20px; height: 20px; fill: currentColor; }
+
+/* === VİDEO OYNATICI === */
+#videoPlayerModal .dialog{width:min(1100px,100%);background:#000;border:1px solid #333;overflow:hidden; border-radius:10px}
+.player-header{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:#0f1521;color:white; border-bottom:1px solid #1e293b}
+.player-header h3{margin:0;font-size:16px; font-weight:600}
 .video-container{position:relative;width:100%;padding-top:56.25%;background:#000}
 .video-container iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
-.rotate-hint{display:none;text-align:center;padding:10px;background:#172233;color:#a9c4e8;font-size:12px}
+.rotate-hint{display:none;text-align:center;padding:12px;background:#1e293b;color:#93c5fd;font-size:13px; font-weight:500}
 
 @media(max-width:1000px){.catalog-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:650px){
@@ -99,6 +121,10 @@ button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-deco
  .hero h1{font-size:39px}.rail{grid-auto-columns:145px}.cover{height:205px}
  .catalog-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:17px 10px}.catalog-grid .cover{height:180px}
  .rotate-hint{display:block}
+ .dialog-inner{padding:0 20px 20px;}
+ .dialog h2{font-size:22px}
+ .dialog-desc{-webkit-line-clamp:4;}
+ .btn-play{width:100%; justify-content:center; padding:16px; font-size:17px;}
 }
 </style>
 </head>
@@ -112,7 +138,7 @@ button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-deco
 <section class="section" id="catalog"><div class="section-head"><div><h2>Anime kataloğu</h2><p>Arama yap, tür seç ve yeni seriler bul</p></div></div><div class="catalog-tools"><input class="field search" id="search" placeholder="Anime adı ara…"><select class="field" id="genre"><option value="">Tüm türler</option><option>Action</option><option>Adventure</option><option>Comedy</option><option>Drama</option><option>Fantasy</option><option>Romance</option><option>Sci-Fi</option><option>Slice of Life</option></select><button class="btn btn-ghost" onclick="resetFilters()">Sıfırla</button></div><div class="catalog-grid" id="catalogGrid"><div class="loading">Yükleniyor…</div></div></section>
 </main>
 
-<!-- Anime Detay Modalı -->
+<!-- Detay Modalı -->
 <div class="modal" id="detailModal" onclick="if(event.target===this)closeModal()">
  <div class="dialog">
   <button class="close" onclick="closeModal()">Kapat ✕</button>
@@ -121,15 +147,15 @@ button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-deco
  </div>
 </div>
 
-<!-- ÖZEL VİDEO OYNATICI MODALI -->
+<!-- VİDEO OYNATICI (Vimeo) -->
 <div class="modal" id="videoPlayerModal" onclick="if(event.target===this)closeVideo()">
  <div class="dialog">
   <div class="player-header">
-   <h3 id="vTitle">Anime Adı - 1. Bölüm</h3>
+   <h3 id="vTitle">Anime Adı - İzle</h3>
    <button class="close" style="position:static" onclick="closeVideo()">Kapat ✕</button>
   </div>
   <div class="video-container" id="videoContainer">
-   <!-- Iframe buraya eklenecek -->
+   <!-- Vimeo Iframe buraya eklenecek -->
   </div>
   <div class="rotate-hint">📱 Daha iyi bir deneyim için telefonunuzu yan çevirin.</div>
  </div>
@@ -140,18 +166,6 @@ const API='https://graphql.anilist.co';
 const FIELDS=`id title { romaji english native } coverImage { extraLarge large medium } bannerImage description(asHtml:false) episodes status season seasonYear averageScore genres format siteUrl`;
 const QUERY=`query ($page:Int,$perPage:Int,$sort:[MediaSort],$search:String,$genre:String) { Page(page:$page,perPage:$perPage) { pageInfo { currentPage hasNextPage } media(type:ANIME,isAdult:false,sort:$sort,search:$search,genre:$genre) { ${FIELDS} } } }`;
 let page=1,hasNext=true,loading=false,activeSort='POPULARITY_DESC',activeSearch='',activeGenre='',catalogItems=[],detailCache={};
-
-// === ÖZEL ANİME LİSTESİ VE YOUTUBE ID'LERİ ===
-// Buradaki ID'leri istediğin zaman değiştirebilirsin.
-// Video ID'si yerine "PLAYLIST_ID" de kullanabilirsin (örneğin: "PLwLSw1_eDZl1Z2OaPWYl4DqhX9GkB-jkR" gibi)
-const animeDB = {
-  "Naruto": { cover: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20-4B5y4m5p5y5y.jpg", youtubeId: "PLwLSw1_eDZl1Z2OaPWYl4DqhX9GkB-jkR" },
-  "One Piece": { cover: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21-6L8oVZpY6x4A.jpg", youtubeId: "PLwLSw1_eDZl1Z2OaPWYl4DqhX9GkB-jkR" },
-  "Attack on Titan": { cover: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx16498-6L8oVZpY6x4A.jpg", youtubeId: "PLwLSw1_eDZl1Z2OaPWYl4DqhX9GkB-jkR" },
-  "Demon Slayer": { cover: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx101922-6L8oVZpY6x4A.jpg", youtubeId: "PLwLSw1_eDZl1Z2OaPWYl4DqhX9GkB-jkR" },
-  "Jujutsu Kaisen": { cover: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx113415-6L8oVZpY6x4A.jpg", youtubeId: "PLwLSw1_eDZl1Z2OaPWYl4DqhX9GkB-jkR" },
-  "My Hero Academia": { cover: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21459-6L8oVZpY6x4A.jpg", youtubeId: "PLwLSw1_eDZl1Z2OaPWYl4DqhX9GkB-jkR" }
-};
 
 function title(a){return a.title?.english||a.title?.romaji||'İsimsiz anime'}
 function safeText(s){return String(s||'').replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/\s+/g,' ').trim()}
@@ -204,11 +218,9 @@ function resetFilters(){document.getElementById('search').value='';document.getE
 function openDetail(id){
  const a=detailCache[id];if(!a)return;
  const img=a.coverImage?.extraLarge||a.coverImage?.large||'',banner=a.bannerImage||img;
- document.getElementById('dBanner').style.backgroundImage=`linear-gradient(0deg,#121925,transparent),url("${banner}")`;
+ document.getElementById('dBanner').style.backgroundImage=`linear-gradient(0deg,#0f1521,transparent),url("${banner}")`;
  
- // İzle butonu: anime başlığına göre YouTube ID'sini bulur
  const animeTitle = title(a);
- let ytId = animeDB[animeTitle]?.youtubeId || "PLwLSw1_eDZl1Z2OaPWYl4DqhX9GkB-jkR"; // Varsayılan
  
  document.getElementById('dInner').innerHTML=`
   <img class="dialog-cover" src="${img}" alt="">
@@ -216,32 +228,33 @@ function openDetail(id){
   <div class="romaji">${esc(a.title?.romaji||'')}</div>
   <div class="dialog-stats"><span>★ ${a.averageScore?(a.averageScore/10).toFixed(1):'—'}</span><span>${a.seasonYear||'Yıl bilinmiyor'}</span><span>${a.episodes||'?'} bölüm</span></div>
   <div class="chips">${(a.genres||[]).slice(0,5).map(g=>`<span class="chip">${esc(g)}</span>`).join('')}</div>
-  <div class="dialog-desc">${safeText(a.description)||'Açıklama yok.'}</div>
+  <div class="dialog-desc">${safeText(a.description)||'Bu anime için henüz bir açıklama bulunmuyor.'}</div>
   
   <div class="detail-actions">
-   <!-- İzle Butonu: openVideo fonksiyonuna anime başlığını ve YT ID'sini yollar -->
-   <button class="btn btn-main" onclick="openVideo('${esc(animeTitle)}', '${ytId}')">▶ İzle (Resmi YouTube)</button>
-   <a class="detail-link" href="${a.siteUrl}" target="_blank">AniList ↗</a>
+   <!-- YENİ MODERN İZLE BUTONU -->
+   <button class="btn-play" onclick="openVideo('${esc(animeTitle)}')">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Şimdi İzle
+   </button>
   </div>`;
  document.getElementById('detailModal').classList.add('show');
 }
 
 function closeModal(){document.getElementById('detailModal').classList.remove('show')}
 
-// === VİDEO OYNATICI FONKSİYONLARI (YOUTUBE IFRAME) ===
-function openVideo(animeTitle, youtubeId){
+// === VİMEO VİDEO OYNATICI ===
+function openVideo(animeTitle){
  closeModal();
  document.getElementById('vTitle').innerText = animeTitle + " - İzle";
  
  const container = document.getElementById('videoContainer');
- // YouTube iframe'ini oluştur
- container.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+ const vimeoId = "148751763"; 
+ 
+ container.innerHTML = `<iframe src="https://player.vimeo.com/video/${vimeoId}?autoplay=1&title=0&byline=0&portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
  
  document.getElementById('videoPlayerModal').classList.add('show');
 }
 
 function closeVideo(){
- // Iframe'i temizle (video dursun diye)
  document.getElementById('videoContainer').innerHTML = '';
  document.getElementById('videoPlayerModal').classList.remove('show');
 }
