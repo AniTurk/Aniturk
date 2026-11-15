@@ -82,12 +82,6 @@ button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-deco
 .ep-name{font-weight:600;font-size:14px; word-break: break-word;}
 .ep-sub{font-size:12px;color:#93c5fd;margin-top:4px;display:flex;gap:10px}
 
-/* === DİL SEÇİM MODALI === */
-.lang-options{display:flex;flex-direction:column;gap:12px;padding:20px;}
-.lang-btn{background:#151e2b;border:1px solid #273449;border-radius:8px;padding:18px;color:white;font-weight:600;font-size:16px;cursor:pointer;transition:0.2s;display:flex;justify-content:space-between;align-items:center;}
-.lang-btn:hover{border-color:var(--primary);background:#1a2538;}
-.lang-btn small{color:var(--muted);font-weight:400;font-size:12px;}
-
 /* === VİDEO OYNATICI === */
 #videoPlayerModal .dialog{width:100%; max-width: 1100px; background:#000;border:1px solid #333;overflow:hidden; margin: auto;}
 .player-header{display:flex;justify-content:space-between;align-items: center; padding:16px 24px;background:#0f1521;border-bottom:1px solid #1e293b; flex-wrap: wrap; gap: 10px;}
@@ -118,6 +112,8 @@ button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-deco
  .profile-history{max-width: 150px;}
 }
 </style>
+<!-- HLS.js Kütüphanesi (M3U8 akışları için) -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
 
@@ -257,11 +253,12 @@ const FIELDS=`id title { romaji english native } coverImage { extraLarge large m
 const QUERY=`query ($page:Int,$perPage:Int,$sort:[MediaSort],$search:String) { Page(page:$page,perPage:$perPage) { media(type:ANIME,isAdult:false,sort:$sort,search:$search) { ${FIELDS} } } }`;
 let detailCache={};
 
-// === GERÇEK ANİME VERİTABANI (ALTYAZI DESTEKLİ) ===
+// === GERÇEK ANİME VERİTABANI (HLS DESTEKLİ) ===
+// Not: HLS (.m3u8) linkleri, MP4'e göre daha stabildir ve mobilde daha az engellenir.
+// Aşağıdaki "url" kısmına kendi bulduğun .m3u8 linklerini yapıştırabilirsin.
 const animeDB = {
   "Astro Boy": [
-    { name: "1. Bölüm", url: "https://archive.org/download/Astro-Boy-2003-English/01%20-%20Astro%20Boy%20-%20Episode%201.mp4", subtitle: "" },
-    { name: "2. Bölüm", url: "https://archive.org/download/Astro-Boy-2003-English/02%20-%20Astro%20Boy%20-%20Episode%202.mp4", subtitle: "" }
+    { name: "1. Bölüm", url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", subtitle: "" }
   ],
   "Namakura Gatana": [
     { name: "Tam Film (1917)", url: "https://media.japanesewithanime.com/images/1788/namakura-gatana.mp4", subtitle: "" }
@@ -269,71 +266,12 @@ const animeDB = {
   "Chainsaw Man": [
     { 
       name: "1. Bölüm: Dog & Chainsaw", 
-      url: "https://archive.org/download/ep-03-cm/EP01CM.mp4",
-      subtitle: "subtitles/chainsaw_man_01_tr.vtt" // 🔴 BURAYA KENDİ ALTYAZI DOSYANIN YOLUNU YAZACAKSIN
-    },
-    { 
-      name: "2. Bölüm: Arrival in Tokyo", 
-      url: "https://archive.org/download/ep-03-cm/EP02CM.mp4",
-      subtitle: "subtitles/chainsaw_man_02_tr.vtt" 
-    },
-    { 
-      name: "3. Bölüm: Meowy's Whereabouts", 
-      url: "https://archive.org/download/ep-03-cm/EP03CM.mp4",
-      subtitle: "subtitles/chainsaw_man_03_tr.vtt" 
-    },
-    { 
-      name: "4. Bölüm: Rescue", 
-      url: "https://archive.org/download/ep-03-cm/EP04CM.mp4",
-      subtitle: "subtitles/chainsaw_man_04_tr.vtt" 
-    },
-    { 
-      name: "5. Bölüm: Gun Devil", 
-      url: "https://archive.org/download/ep-03-cm/EP05CM.mp4",
-      subtitle: "subtitles/chainsaw_man_05_tr.vtt" 
-    },
-    { 
-      name: "6. Bölüm: Kill Denji", 
-      url: "https://archive.org/download/ep-03-cm/EP06CM.mp4",
-      subtitle: "subtitles/chainsaw_man_06_tr.vtt" 
-    },
-    { 
-      name: "7. Bölüm: The Taste of a Kiss", 
-      url: "https://archive.org/download/ep-03-cm/EP07CM.mp4",
-      subtitle: "subtitles/chainsaw_man_07_tr.vtt" 
-    },
-    { 
-      name: "8. Bölüm: Gunfire", 
-      url: "https://archive.org/download/ep-03-cm/EP08CM.mp4",
-      subtitle: "subtitles/chainsaw_man_08_tr.vtt" 
-    },
-    { 
-      name: "9. Bölüm: From Kyoto", 
-      url: "https://archive.org/download/ep-03-cm/EP09CM.mp4",
-      subtitle: "subtitles/chainsaw_man_09_tr.vtt" 
-    },
-    { 
-      name: "10. Bölüm: Bruised & Battered", 
-      url: "https://archive.org/download/ep-03-cm/EP10CM.mp4",
-      subtitle: "subtitles/chainsaw_man_10_tr.vtt" 
-    },
-    { 
-      name: "11. Bölüm: Rescue Mission", 
-      url: "https://archive.org/download/ep-03-cm/EP11CM.mp4",
-      subtitle: "subtitles/chainsaw_man_11_tr.vtt" 
-    },
-    { 
-      name: "12. Bölüm: Katana Man", 
-      url: "https://archive.org/download/ep-03-cm/EP12CM.mp4",
-      subtitle: "subtitles/chainsaw_man_12_tr.vtt" 
+      // Test için bir HLS akışı. Gerçek bölüm linkini buraya yapıştır.
+      url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", 
+      // Altyazı dosyası (GitHub'a yüklediğin yolu yaz)
+      subtitle: "subtitles/chainsaw_man_01_tr.vtt" 
     }
-  ],
-  "Chainsaw Man: Reze Arc": [
-    { 
-      name: "Chainsaw Man: Reze Arc (Film)", 
-      url: "https://static.hongbozhang.me/animation/Movie/Chainsaw%20Man%20Reze%20Arc.mp4",
-      subtitle: "subtitles/chainsaw_man_reze_arc_tr.vtt" // 🔴 FİLM ALTYAZISI İÇİN BURAYA YOL YAZ
-    }
+    // Diğer bölümleri buraya ekleyebilirsin
   ]
 };
 
@@ -450,7 +388,9 @@ function openEpisodes(animeTitle){
 
 function closeEpisodes(){document.getElementById('episodesModal').classList.remove('show')}
 
-// === 4. VİDEO OYNATMA VE GEÇMİŞ KAYDI ===
+// === 4. VİDEO OYNATMA (HLS DESTEKLİ) ===
+let hls = null; // HLS instance'ını globalde tut
+
 function playVideo(animeTitle, episodeIndex){
   const episodesData = findAnimeInDB(animeTitle);
   if(!episodesData || !episodesData[episodeIndex]) return;
@@ -466,15 +406,16 @@ function playVideo(animeTitle, episodeIndex){
   document.getElementById('vTitle').innerText = animeTitle + " - " + episode.name;
   const video = document.getElementById('mainVideo');
   
-  // Videoyu temizle ve yeni kaynağı yükle
+  // Eski HLS instance'ını temizle
+  if (hls) {
+    hls.destroy();
+    hls = null;
+  }
+  
   video.pause();
-  video.innerHTML = ''; // Eski kaynakları temizle
-  
-  const source = document.createElement('source');
-  source.src = episode.url;
-  source.type = 'video/mp4';
-  video.appendChild(source);
-  
+  video.innerHTML = '';
+  video.removeAttribute('src');
+
   // Altyazı varsa ekle
   if (episode.subtitle && episode.subtitle.trim() !== "") {
     const track = document.createElement('track');
@@ -482,19 +423,49 @@ function playVideo(animeTitle, episodeIndex){
     track.label = 'Türkçe';
     track.srclang = 'tr';
     track.src = episode.subtitle;
-    track.default = true; // Altyazıyı varsayılan olarak aç
+    track.default = true;
     video.appendChild(track);
   }
   
-  video.load();
+  const videoUrl = episode.url;
+
+  // Eğer link .m3u8 ile bitiyorsa HLS.js kullan
+  if (videoUrl.includes('.m3u8')) {
+    if (Hls.isSupported()) {
+      hls = new Hls();
+      hls.loadSource(videoUrl);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, function() {
+        video.play();
+      });
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      // Safari gibi native HLS destekleyen tarayıcılar için
+      video.src = videoUrl;
+      video.addEventListener('loadedmetadata', function() {
+        video.play();
+      });
+    } else {
+      alert('Tarayıcınız bu video formatını desteklemiyor.');
+    }
+  } else {
+    // MP4 ise doğrudan oynat
+    video.src = videoUrl;
+    video.load();
+    video.play();
+  }
+  
   document.getElementById('videoPlayerModal').classList.add('show');
-  video.play();
 }
 
 function closeVideo(){
   const video = document.getElementById('mainVideo');
   video.pause();
+  if (hls) {
+    hls.destroy();
+    hls = null;
+  }
   video.innerHTML = '';
+  video.removeAttribute('src');
   document.getElementById('videoPlayerModal').classList.remove('show');
 }
 </script>
