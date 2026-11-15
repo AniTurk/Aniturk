@@ -98,7 +98,7 @@ button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-deco
    <button class="close-btn" onclick="closeVideo()">Kapat ✕</button>
   </div>
   <div class="video-container" id="videoContainer">
-    <!-- MegaPlay iframe buraya eklenecek -->
+    <!-- iframe buraya eklenecek -->
   </div>
  </div>
 </div>
@@ -141,11 +141,9 @@ window.onload = () => {
 };
 
 // === ANİME VERİLERİ (AniList ID'leri ile) ===
-// Bu liste, AniList API'sinden gelen animeleri temsil eder.
-// Her animenin bir AniList ID'si vardır (örneğin Attack on Titan: 16498).
 const animeDB = {
   "Attack on Titan": { anilistId: 16498, totalEpisodes: 25 },
-  "One Piece": { anilistId: 21, totalEpisodes: 1000 }, // Örnek
+  "One Piece": { anilistId: 21, totalEpisodes: 1000 },
   "Jujutsu Kaisen": { anilistId: 113415, totalEpisodes: 24 },
   "Demon Slayer": { anilistId: 101922, totalEpisodes: 26 },
   "My Hero Academia": { anilistId: 21459, totalEpisodes: 13 }
@@ -156,7 +154,6 @@ function initApp() {
   let html = '';
   for (let key in animeDB) {
     const anime = animeDB[key];
-    // Kapak resmi için AniList CDN kullanıyoruz (ID'ye göre)
     html += `
       <article class="anime-card" onclick="openAnime('${key}')">
         <img class="cover" src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx${anime.anilistId}.jpg" alt="${key}" onerror="this.src='https://via.placeholder.com/300x400?text=AniTürk'">
@@ -172,7 +169,6 @@ function openAnime(animeTitle) {
   const anime = animeDB[animeTitle];
   if (!anime) return;
 
-  // Bölüm listesini oluştur
   let html = '';
   for (let i = 1; i <= anime.totalEpisodes; i++) {
     html += `
@@ -183,14 +179,13 @@ function openAnime(animeTitle) {
     `;
   }
 
-  // Bölüm listesini modal olarak göster
   const modal = document.getElementById('videoPlayerModal');
   document.getElementById('vTitle').innerText = animeTitle + " - Bölümler";
   document.getElementById('videoContainer').innerHTML = `<div class="episode-list" style="max-height: 60vh; overflow-y: auto;">${html}</div>`;
   modal.classList.add('show');
 }
 
-// === MEGAPLAY IFRAME İLE VİDEO OYNATMA ===
+// === VIBEPLAYER IFRAME İLE VİDEO OYNATMA ===
 function playEpisode(animeTitle, episodeNumber) {
   const anime = animeDB[animeTitle];
   if (!anime) return;
@@ -199,9 +194,9 @@ function playEpisode(animeTitle, episodeNumber) {
   
   const container = document.getElementById('videoContainer');
   
-  // MegaPlay iframe URL'si (AniList ID ile)
-  // Örnek: https://megaplay.buzz/stream/ani/16498/1/sub
-  const iframeUrl = `https://megaplay.buzz/stream/ani/${anime.anilistId}/${episodeNumber}/sub`;
+  // VibePlayer iframe URL'si (AniList ID ile)
+  // Örnek: https://vibeplayer.site/embed/ani/16498/1/sub
+  const iframeUrl = `https://vibeplayer.site/embed/ani/${anime.anilistId}/${episodeNumber}/sub`;
   
   container.innerHTML = `
     <iframe 
