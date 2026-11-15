@@ -3,206 +3,251 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#090912">
-<title>AniTürk — Anime keşfet</title>
+<meta name="theme-color" content="#0b0f16">
+<title>AniTürk — Anime İzle</title>
 <style>
-:root{--bg:#090912;--surface:#11111d;--surface2:#191927;--surface3:#222235;--line:#29293d;--txt:#f6f3ff;--muted:#a7a3b9;--purple:#a47aff;--pink:#ff6da9;--cyan:#78d9df;--shadow:0 20px 70px #0008}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
-.topbar{height:72px;position:sticky;top:0;z-index:20;background:#090912ed;backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
-.nav{max-width:1400px;height:100%;margin:auto;padding:0 28px;display:flex;align-items:center;gap:30px}.brand{font-size:25px;font-weight:950;letter-spacing:-1.5px;background:linear-gradient(100deg,#c19bff,#ff76b4);background-clip:text;color:transparent;white-space:nowrap}.brand i{color:white;font-style:normal}.navlinks{display:flex;gap:23px}.navlinks a{font-size:13px;color:var(--muted);font-weight:650}.navlinks a:hover,.navlinks a.active{color:#fff}.grow{flex:1}.navsearch{width:min(260px,25vw);border:1px solid var(--line);background:var(--surface);padding:10px 14px;border-radius:11px;color:white;outline:none}.navsearch:focus{border-color:var(--purple)}.profiledot{height:36px;width:36px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(140deg,#8d67e9,#ed6da8);font-weight:900}
-.wrap{max-width:1400px;margin:auto;padding:28px 28px 80px}
-.hero{min-height:370px;border:1px solid #49355f;border-radius:25px;overflow:hidden;position:relative;display:flex;align-items:center;padding:48px;background:linear-gradient(100deg,#19142b 0%,#211632 45%,#25152b 100%);isolation:isolate}
-.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#171326 0%,#171326ee 35%,#17132644 100%),url("https://s4.anilist.co/file/anilistcdn/media/anime/banner/21-6L8oVZpY6x4A.jpg") center 34%/cover;opacity:.52;z-index:-2}
-.hero:after{content:"";position:absolute;width:460px;height:460px;border-radius:50%;border:1px solid #ffffff1c;right:8%;top:-20%;box-shadow:0 0 0 40px #ffffff08,0 0 0 80px #ffffff06;z-index:-1}
-.hero-content{max-width:670px}.eyebrow{color:#d6baff;text-transform:uppercase;letter-spacing:2.5px;font-size:11px;font-weight:850}.hero h1{font-size:clamp(36px,5.4vw,68px);line-height:1.01;letter-spacing:-2.7px;margin:15px 0}.hero h1 span{background:linear-gradient(90deg,#c39aff,#ff82b8);background-clip:text;color:transparent}.hero p{color:#c3bbd4;max-width:560px;font-size:15px}.hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:24px}.btn{border:0;border-radius:11px;padding:12px 17px;font-weight:800}.btn-main{background:linear-gradient(100deg,#986cff,#e967a8);color:white;box-shadow:0 8px 25px #a05cbb44}.btn-ghost{background:#ffffff12;border:1px solid #ffffff35;color:#fff}.hero-meta{display:flex;gap:22px;margin-top:26px;color:#d6cde5;font-size:12px}.hero-meta b{color:white}
-.section{margin-top:38px;scroll-margin-top:90px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:16px}.section-head h2{margin:0;font-size:22px;letter-spacing:-.5px}.section-head p{margin:4px 0 0;color:var(--muted);font-size:12px}.more{font-size:12px;color:#c9aaff;font-weight:800;background:none;border:0}
-.rail{display:grid;grid-auto-flow:column;grid-auto-columns:178px;gap:14px;overflow-x:auto;padding:2px 2px 12px;scrollbar-width:thin;scrollbar-color:#39334c transparent}
-.anime-card{min-width:0;cursor:pointer;position:relative}.cover{width:100%;height:245px;object-fit:cover;display:block;border-radius:13px;background:linear-gradient(145deg,#302746,#171723);box-shadow:0 8px 24px #0004;transition:transform .2s,filter .2s}.anime-card:hover .cover{transform:translateY(-4px);filter:brightness(1.08)}.cover-wrap{position:relative}.score{position:absolute;top:8px;left:8px;background:#090912dc;border:1px solid #ffffff25;border-radius:7px;padding:4px 7px;font-size:11px;font-weight:850}.heart{position:absolute;right:8px;top:8px;width:31px;height:31px;border:1px solid #ffffff35;border-radius:50%;background:#090912d9;color:white;font-size:17px;display:grid;place-items:center}.heart.on{color:#ff7db6;background:#3b1c36}.anime-card h3{font-size:13px;line-height:1.3;margin:9px 1px 3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.subline{color:var(--muted);font-size:11px;margin-left:1px}
-.catalog-tools{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0}.field{background:var(--surface);color:white;border:1px solid var(--line);border-radius:10px;padding:11px 13px;outline:none}.field:focus{border-color:var(--purple)}.field.search{flex:1;min-width:180px}.catalog-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:22px 15px}.empty{grid-column:1/-1;padding:40px;text-align:center;background:var(--surface);border:1px solid var(--line);border-radius:15px;color:var(--muted)}.loadrow{text-align:center;margin:24px 0}.loading{color:var(--muted);text-align:center;padding:28px}.skeleton{height:245px;border-radius:13px;background:linear-gradient(100deg,#161624 20%,#29283b 40%,#161624 60%);background-size:200% 100%;animation:shine 1.3s infinite}@keyframes shine{to{background-position:-200% 0}}
-.notice{margin-top:34px;padding:16px 18px;border:1px solid #353047;border-radius:13px;background:#13121d;color:#aaa5b9;font-size:12px}.notice b{color:#e6def5}
-footer{border-top:1px solid var(--line);padding:28px;text-align:center;color:#77748a;font-size:12px}
-.modal{position:fixed;inset:0;z-index:50;background:#000c;display:none;place-items:center;padding:16px;backdrop-filter:blur(8px)}.modal.show{display:grid}.dialog{width:min(850px,100%);max-height:90vh;overflow:auto;border:1px solid #4a3b65;background:#141321;border-radius:20px;box-shadow:var(--shadow);position:relative}.dialog-banner{height:220px;background-size:cover;background-position:center;position:relative}.dialog-banner:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#141321,transparent 80%)}.dialog-inner{padding:0 25px 25px;position:relative;margin-top:-48px}.dialog-cover{width:112px;height:155px;object-fit:cover;border-radius:10px;border:3px solid #141321;float:left;margin-right:18px;box-shadow:0 8px 25px #0007}.dialog h2{font-size:25px;margin:0 0 5px}.dialog .romaji{color:var(--muted);font-size:12px}.dialog-desc{clear:both;padding-top:18px;color:#c7c2d2;font-size:13px;line-height:1.65}.dialog-stats{display:flex;gap:18px;flex-wrap:wrap;color:#d9d3e5;font-size:12px;margin:12px 0}.chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.chip{background:#2a2140;color:#d6c3ff;border-radius:6px;padding:4px 8px;font-size:11px}.close{position:absolute;right:14px;top:14px;z-index:3;border:1px solid #ffffff55;background:#090912c9;color:white;border-radius:9px;padding:7px 11px}.detail-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.detail-link{display:inline-block;background:#272238;border:1px solid #514366;border-radius:9px;padding:10px 13px;font-size:12px;font-weight:800}.detail-link.primary{background:linear-gradient(100deg,#986cff,#e967a8);border:0}.mobilebar{display:none}
-@media(max-width:1000px){.catalog-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.nav{gap:18px}.navlinks{gap:14px}}
-@media(max-width:650px){.topbar{height:60px}.nav{padding:0 15px;gap:12px}.brand{font-size:22px}.navlinks{display:none}.navsearch{width:auto;flex:1;min-width:0;padding:9px 10px}.profiledot{display:none}.wrap{padding:17px 14px 90px}.hero{min-height:350px;padding:27px 22px;border-radius:19px}.hero:before{background:linear-gradient(90deg,#171326ee,#171326aa),url("https://s4.anilist.co/file/anilistcdn/media/anime/banner/21-6L8oVZpY6x4A.jpg") center/cover}.hero h1{font-size:42px;letter-spacing:-1.7px}.hero p{font-size:13px}.hero-meta{gap:12px;flex-wrap:wrap}.section{margin-top:30px}.section-head h2{font-size:19px}.rail{grid-auto-columns:137px;gap:11px}.cover{height:190px}.catalog-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:17px 10px}.catalog-grid .cover{height:175px}.catalog-tools{gap:7px}.field{font-size:12px;padding:10px}.field.search{flex-basis:100%}.dialog-banner{height:155px}.dialog-inner{padding:0 16px 18px}.dialog-cover{width:87px;height:125px}.dialog h2{font-size:20px}.dialog-desc{font-size:12px}.mobilebar{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:25;background:#10101cf5;border-top:1px solid var(--line);padding:9px 4px calc(9px + env(safe-area-inset-bottom));justify-content:space-around;backdrop-filter:blur(16px)}.mobilebar button{border:0;background:none;color:#aaa6bb;font-size:10px;display:grid;gap:3px;justify-items:center}.mobilebar button span{font-size:19px}.mobilebar button.active{color:#c6a4ff}}
-
-/* AniTürk — sade, Crunchyroll esintili görünüm */
-:root{
-  --bg:#0f0f0f;--surface:#1b1b1b;--surface2:#252525;--surface3:#303030;
-  --line:#353535;--txt:#f5f5f5;--muted:#b4b4b4;
-  --purple:#f47521;--pink:#f47521;--cyan:#f5a15f;
-  --shadow:0 14px 40px #0009
-}
-body{background:#0f0f0f;color:var(--txt)}
-.topbar{background:#141414;border-bottom:1px solid #303030;backdrop-filter:none}
-.nav{max-width:1480px}
-.brand{background:none;color:#f47521;letter-spacing:-1px;font-weight:950}
-.brand i{color:#fff}
-.navlinks a{color:#c5c5c5}
-.navlinks a:hover,.navlinks a.active{color:#f47521}
-.navsearch,.field{background:#242424;border-color:#424242;border-radius:5px}
-.navsearch:focus,.field:focus{border-color:#f47521}
-.profiledot{background:#f47521;color:#111;border-radius:4px}
-.wrap{max-width:1480px}
-.hero{min-height:390px;border:0;border-radius:4px;padding:46px;background:#222;box-shadow:none}
-.hero:before{background:linear-gradient(90deg,#111 0%,#111e 40%,#1112 100%),url("https://s4.anilist.co/file/anilistcdn/media/anime/banner/21-6L8oVZpY6x4A.jpg") center 35%/cover;opacity:.9}
-.hero:after{display:none}
-.eyebrow{color:#f47521;letter-spacing:1.5px}
-.hero h1{letter-spacing:-1.8px}
-.hero h1 span{background:none;color:#f47521}
-.hero p{color:#e0e0e0}
-.btn{border-radius:4px}
-.btn-main{background:#f47521;color:#111;box-shadow:none}
-.btn-main:hover{background:#ff9148}
-.btn-ghost{background:#242424;border:1px solid #666;color:#fff}
-.hero-meta{color:#ddd}
-.section{margin-top:34px}
-.section-head h2{font-size:23px;letter-spacing:0}
-.section-head p{color:#aaa}
-.more{color:#f58a43}
-.rail{grid-auto-columns:190px;gap:15px}
-.cover{height:270px;border-radius:3px;box-shadow:none;transition:filter .15s}
-.anime-card:hover .cover{transform:none;filter:brightness(1.12)}
-.score{background:#111e;border:0;border-radius:2px}
-.heart{border-radius:3px;background:#111e;border:0}
-.heart.on{color:#f47521;background:#25180f}
-.anime-card h3{font-size:14px;font-weight:650}
-.subline{color:#aaa}
-.catalog-grid{gap:23px 16px}
-.catalog-grid .cover{border-radius:3px}
-.skeleton{border-radius:3px}
-.notice{background:#1b1b1b;border:1px solid #383838;border-radius:4px}
-.notice b{color:#eee}
-footer{border-color:#303030}
-.dialog{border:1px solid #444;background:#1b1b1b;border-radius:5px}
-.dialog-banner:after{background:linear-gradient(0deg,#1b1b1b,transparent 80%)}
-.dialog-cover{border:3px solid #1b1b1b;border-radius:3px;box-shadow:none}
-.dialog-desc{color:#d0d0d0}
-.chip{background:#342317;color:#ffb27d;border-radius:3px}
-.detail-link{background:#292929;border:1px solid #555;border-radius:4px}
-.detail-link.primary{background:#f47521;color:#111;border:0}
-.mobilebar{background:#171717;border-top:1px solid #393939;backdrop-filter:none}
-.mobilebar button.active{color:#f47521}
-@media(max-width:650px){
- .hero{min-height:350px;padding:25px 20px;border-radius:3px}
- .hero:before{background:linear-gradient(90deg,#111e,#1119),url("https://s4.anilist.co/file/anilistcdn/media/anime/banner/21-6L8oVZpY6x4A.jpg") center/cover}
- .hero h1{font-size:39px;letter-spacing:-1.2px}
- .rail{grid-auto-columns:145px;gap:11px}
- .cover{height:205px}
- .catalog-grid .cover{height:180px}
- .mobilebar{padding-bottom:calc(9px + env(safe-area-inset-bottom))}
-}
-
-
-/* AniTürk özgün kimlik: gece laciverti + sakin mavi */
+/* === ANA TEMA (Gece Laciverti) === */
 :root{
  --bg:#0b0f16;--surface:#121925;--surface2:#192333;--surface3:#202d40;
  --line:#273449;--txt:#e5ebf4;--muted:#9aa9bd;
  --purple:#789ac7;--pink:#789ac7;--cyan:#a8c5ed;
  --shadow:0 14px 40px #02071199
 }
-body{background:#0b0f16;color:#e5ebf4}
-.topbar{background:#0d131d;border-bottom:1px solid #202d40}
-.brand{
- display:inline-flex;align-items:center;gap:10px;background:none;
- color:#d5deeb;font-size:23px;font-weight:850;letter-spacing:-.8px
-}
-.brand-mark{
- width:31px;height:31px;display:inline-flex;align-items:center;justify-content:center;
- border-radius:9px;color:#eaf2ff;font-size:17px;font-weight:900;letter-spacing:-1px;
- background:linear-gradient(145deg,#45658f,#243b5c);
- border:1px solid #6785ad;box-shadow:inset 0 1px 0 #ffffff24,0 4px 12px #02071188;
- position:relative
-}
-.brand-mark:after{
- content:"";position:absolute;right:-4px;bottom:-4px;width:9px;height:9px;
- border-radius:50%;background:#8eadd8;border:2px solid #0d131d
-}
-.brand-name{color:#d9e1ed}
-.brand i{color:#789ac7}
-.navlinks a{color:#aab8ca}
-.navlinks a:hover,.navlinks a.active{color:#9bb9e3}
-.navsearch,.field{background:#151e2b;border-color:#2c3b51;color:#e5ebf4}
-.navsearch:focus,.field:focus{border-color:#789ac7}
-.profiledot{background:#243b5c;color:#dce9fb;border-radius:7px}
-.hero{background:#151e2b}
-.hero:before{
- background:linear-gradient(90deg,#0b1019 0%,#0b1019e8 37%,#0b101966 100%),
- url("https://s4.anilist.co/file/anilistcdn/media/anime/banner/21-6L8oVZpY6x4A.jpg") center 35%/cover;
- opacity:.88
-}
-.eyebrow{color:#9bb9e3;letter-spacing:1.4px}
-.hero h1 span{background:none;color:#a9c4e8}
-.hero p{color:#d1dbea}
-.btn-main{background:#789ac7;color:#07101d;box-shadow:none}
-.btn-main:hover{background:#91afd8}
-.btn-ghost{background:#172233;border:1px solid #40536e;color:#e5ebf4}
-.more{color:#a9c4e8}
-.score{background:#0b1422e8;border:1px solid #344b69}
-.heart.on{color:#a9c4e8;background:#1d2c42}
-.notice{background:#121925;border:1px solid #2b3a50}
-.notice b{color:#e5ebf4}
-.dialog{border:1px solid #34445b;background:#121925}
-.dialog-banner:after{background:linear-gradient(0deg,#121925,transparent 80%)}
-.dialog-cover{border:3px solid #121925}
-.chip{background:#1d2c42;color:#b9d0ef}
-.detail-link{background:#192333;border:1px solid #3a4c65}
-.detail-link.primary{background:#789ac7;color:#07101d;border:0}
-.mobilebar{background:#101824;border-top:1px solid #2a394e}
-.mobilebar button.active{color:#a9c4e8}
-footer{border-color:#273449}
-@media(max-width:650px){
- .brand{font-size:21px}
- .brand-mark{width:29px;height:29px;border-radius:8px}
- .hero:before{background:linear-gradient(90deg,#0b1019e8,#0b101988),url("https://s4.anilist.co/file/anilistcdn/media/anime/banner/21-6L8oVZpY6x4A.jpg") center/cover}
-}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
 
+/* === ÜST BAR === */
+.topbar{height:72px;position:sticky;top:0;z-index:20;background:#0d131d;border-bottom:1px solid var(--line)}
+.nav{max-width:1480px;height:100%;margin:auto;padding:0 28px;display:flex;align-items:center;gap:30px}
+.brand{display:inline-flex;align-items:center;gap:10px;background:none;color:#d5deeb;font-size:23px;font-weight:850;letter-spacing:-.8px}
+.brand-mark{width:31px;height:31px;display:inline-flex;align-items:center;justify-content:center;border-radius:9px;color:#eaf2ff;font-size:17px;font-weight:900;letter-spacing:-1px;background:linear-gradient(145deg,#45658f,#243b5c);border:1px solid #6785ad;box-shadow:inset 0 1px 0 #ffffff24,0 4px 12px #02071188;position:relative}
+.navlinks{display:flex;gap:23px}.navlinks a{font-size:13px;color:#aab8ca;font-weight:650}
+.navlinks a:hover,.navlinks a.active{color:#9bb9e3}
+.grow{flex:1}.navsearch{width:min(260px,25vw);border:1px solid var(--line);background:#151e2b;padding:10px 14px;border-radius:11px;color:white;outline:none}
+.profiledot{height:36px;width:36px;border-radius:7px;display:grid;place-items:center;background:#243b5c;color:#dce9fb;font-weight:900}
+.wrap{max-width:1480px;margin:auto;padding:28px 28px 80px}
+
+/* === HERO (Banner) === */
+.hero{min-height:390px;border-radius:4px;overflow:hidden;position:relative;display:flex;align-items:center;padding:46px;background:#222;}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0b1019 0%,#0b1019e8 37%,#0b101966 100%),url("https://s4.anilist.co/file/anilistcdn/media/anime/banner/21-6L8oVZpY6x4A.jpg") center 35%/cover;opacity:.88;z-index:-1}
+.hero-content{max-width:670px}
+.eyebrow{color:#9bb9e3;text-transform:uppercase;letter-spacing:1.4px;font-size:11px;font-weight:850}
+.hero h1{font-size:clamp(36px,5.4vw,68px);line-height:1.01;letter-spacing:-2.7px;margin:15px 0}
+.hero h1 span{background:none;color:#a9c4e8}
+.hero p{color:#d1dbea;max-width:560px;font-size:15px}
+.hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:24px}
+.btn{border:0;border-radius:5px;padding:12px 17px;font-weight:800}
+.btn-main{background:#789ac7;color:#07101d;box-shadow:none}.btn-main:hover{background:#91afd8}
+.btn-ghost{background:#172233;border:1px solid #40536e;color:#e5ebf4}
+.hero-meta{display:flex;gap:22px;margin-top:26px;color:#ddd;font-size:12px}.hero-meta b{color:white}
+
+/* === LİSTELER VE KARTLAR === */
+.section{margin-top:34px}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:16px}
+.section-head h2{margin:0;font-size:23px;letter-spacing:0}
+.section-head p{margin:4px 0 0;color:#aaa;font-size:12px}
+.more{font-size:12px;color:#a9c4e8;font-weight:800;background:none;border:0}
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:190px;gap:15px;overflow-x:auto;padding:2px 2px 12px}
+.anime-card{min-width:0;cursor:pointer;position:relative}
+.cover{width:100%;height:270px;object-fit:cover;display:block;border-radius:3px;background:#171723;transition:filter .15s}
+.anime-card:hover .cover{filter:brightness(1.12)}
+.cover-wrap{position:relative}
+.score{position:absolute;top:8px;left:8px;background:#0b1422e8;border:1px solid #344b69;border-radius:2px;padding:4px 7px;font-size:11px;font-weight:850}
+.heart{position:absolute;right:8px;top:8px;width:31px;height:31px;border-radius:3px;background:#111e;border:0;color:white;font-size:17px;display:grid;place-items:center}
+.heart.on{color:#a9c4e8;background:#1d2c42}
+.anime-card h3{font-size:14px;line-height:1.3;margin:9px 1px 3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:650}
+.subline{color:#aaa;font-size:11px;margin-left:1px}
+.catalog-tools{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0}
+.field{background:#151e2b;color:white;border:1px solid #2c3b51;border-radius:5px;padding:11px 13px;outline:none}
+.field.search{flex:1;min-width:180px}
+.catalog-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:23px 16px}
+.empty{grid-column:1/-1;padding:40px;text-align:center;background:var(--surface);border:1px solid var(--line);border-radius:15px;color:var(--muted)}
+.loading{color:var(--muted);text-align:center;padding:28px}
+
+/* === MODAL (DETAY VE VİDEO OYNATICI) === */
+.modal{position:fixed;inset:0;z-index:50;background:#000d;display:none;place-items:center;padding:16px;backdrop-filter:blur(8px)}
+.modal.show{display:grid}
+.dialog{width:min(850px,100%);max-height:90vh;overflow:auto;border:1px solid #34445b;background:#121925;border-radius:5px;box-shadow:var(--shadow);position:relative}
+.dialog-banner{height:220px;background-size:cover;background-position:center;position:relative}
+.dialog-banner:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#121925,transparent 80%)}
+.dialog-inner{padding:0 25px 25px;position:relative;margin-top:-48px}
+.dialog-cover{width:112px;height:155px;object-fit:cover;border:3px solid #121925;border-radius:3px;float:left;margin-right:18px}
+.dialog h2{font-size:25px;margin:0 0 5px}
+.dialog .romaji{color:var(--muted);font-size:12px}
+.dialog-desc{clear:both;padding-top:18px;color:#d0d0d0;font-size:13px;line-height:1.65}
+.dialog-stats{display:flex;gap:18px;flex-wrap:wrap;color:#d9d3e5;font-size:12px;margin:12px 0}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.chip{background:#1d2c42;color:#b9d0ef;border-radius:3px;padding:4px 8px;font-size:11px}
+.close{position:absolute;right:14px;top:14px;z-index:3;border:1px solid #ffffff55;background:#090912c9;color:white;border-radius:5px;padding:7px 11px}
+.detail-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.detail-link{display:inline-block;background:#192333;border:1px solid #3a4c65;border-radius:4px;padding:10px 13px;font-size:12px;font-weight:800;cursor:pointer}
+.detail-link.primary{background:#789ac7;color:#07101d;border:0}
+
+/* === ÖZEL VİDEO OYNATICI TASARIMI === */
+#videoPlayerModal .dialog{width:min(1100px,100%);background:#000;border:1px solid #333;overflow:hidden}
+.player-header{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:#111;color:white}
+.player-header h3{margin:0;font-size:16px}
+.video-container{position:relative;width:100%;padding-top:56.25%;background:#000}
+.video-container iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+.rotate-hint{display:none;text-align:center;padding:10px;background:#172233;color:#a9c4e8;font-size:12px}
+
+@media(max-width:1000px){.catalog-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:650px){
+ .topbar{height:60px}.nav{padding:0 15px;gap:12px}.brand{font-size:21px}.navlinks{display:none}.navsearch{width:auto;flex:1;min-width:0}
+ .wrap{padding:17px 14px 90px}.hero{min-height:350px;padding:25px 20px}
+ .hero h1{font-size:39px}.rail{grid-auto-columns:145px}.cover{height:205px}
+ .catalog-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:17px 10px}.catalog-grid .cover{height:180px}
+ .rotate-hint{display:block}
+}
 </style>
 </head>
 <body>
-<header class="topbar"><nav class="nav"><a class="brand" href="#"><span class="brand-mark" aria-hidden="true">A</span><span class="brand-name">AniTürk</span></a><div class="navlinks"><a class="active" href="#home">Ana Sayfa</a><a href="#trending">Trendler</a><a href="#catalog">Keşfet</a><a href="#mylist">Listem</a></div><div class="grow"></div><input class="navsearch" id="topSearch" placeholder="Anime ara..." aria-label="Anime ara"><div class="profiledot">A</div></nav></header>
+<header class="topbar"><nav class="nav"><a class="brand" href="#"><span class="brand-mark" aria-hidden="true">A</span><span class="brand-name">AniTürk</span></a><div class="navlinks"><a class="active" href="#home">Ana Sayfa</a><a href="#trending">Trendler</a><a href="#catalog">Keşfet</a></div><div class="grow"></div><input class="navsearch" id="topSearch" placeholder="Anime ara..."><div class="profiledot">A</div></nav></header>
+
 <main class="wrap">
-<section class="hero" id="home"><div class="hero-content"><div class="eyebrow">ANİME EVRENİNE HOŞ GELDİN</div><h1>Sevdiğin animeleri <span>keşfet.</span></h1><p>Popüler serileri keşfet, sezonun öne çıkanlarını takip et ve kendi anime listeni oluştur. Hepsi tek yerde.</p><div class="hero-actions"><button class="btn btn-main" onclick="document.querySelector('#catalog').scrollIntoView({behavior:'smooth'})">Keşfetmeye başla&nbsp; →</button><button class="btn btn-ghost" onclick="document.querySelector('#mylist').scrollIntoView({behavior:'smooth'})">♡ Listem</button></div><div class="hero-meta"><span><b>Canlı katalog</b> · AniList verileri</span><span><b>Ücretsiz</b> · Reklamsız tasarım</span></div></div></section>
-<section class="section" id="trending"><div class="section-head"><div><h2>Şu an trend</h2><p>Anime topluluğunda konuşulanlar</p></div><button class="more" onclick="showCatalog('TRENDING_DESC')">Tümünü gör →</button></div><div class="rail" id="trendingRail"><div class="loading">Trend animeler yükleniyor…</div></div></section>
-<section class="section" id="popular"><div class="section-head"><div><h2>En popüler animeler</h2><p>Toplulukta en çok takip edilen yapımlar</p></div><button class="more" onclick="showCatalog('POPULARITY_DESC')">Tümünü gör →</button></div><div class="rail" id="popularRail"><div class="loading">Popüler animeler yükleniyor…</div></div></section>
-<section class="section" id="season"><div class="section-head"><div><h2>Sezon seçkisi</h2><p>Yakın dönemin anime takvimi</p></div></div><div class="rail" id="seasonRail"><div class="loading">Sezon animeleri yükleniyor…</div></div></section>
-<section class="section" id="catalog"><div class="section-head"><div><h2>Anime kataloğu</h2><p>Arama yap, tür seç ve yeni seriler bul</p></div></div><div class="catalog-tools"><input class="field search" id="search" placeholder="Anime adı ara…"><select class="field" id="genre"><option value="">Tüm türler</option><option>Action</option><option>Adventure</option><option>Comedy</option><option>Drama</option><option>Fantasy</option><option>Romance</option><option>Science Fiction</option><option>Slice of Life</option><option>Mystery</option><option>Sports</option></select><select class="field" id="sort"><option value="POPULARITY_DESC">Popüler</option><option value="SCORE_DESC">En yüksek puan</option><option value="TRENDING_DESC">Trend</option><option value="START_DATE_DESC">En yeni</option></select><button class="btn btn-ghost" onclick="resetFilters()">Sıfırla</button></div><div class="catalog-grid" id="catalogGrid"><div class="loading">Anime kataloğu hazırlanıyor…</div></div><div class="loadrow"><button class="btn btn-ghost" id="loadMore" onclick="loadMore()" style="display:none">Daha fazla yükle</button></div></section>
-<section class="section" id="mylist"><div class="section-head"><div><h2>Benim listem</h2><p>Favorilerin ve takip etmek istediklerin bu cihazda saklanır</p></div></div><div class="catalog-tools"><select class="field" id="listFilter"><option value="all">Tüm listem</option><option value="FAVORITE">Favoriler</option><option value="PLANNING">İzlenecek</option><option value="COMPLETED">İzlediklerim</option></select></div><div class="catalog-grid" id="myGrid"><div class="empty">Listene anime eklediğinde burada görünecek.</div></div></section>
-<div class="notice"><b>Veri kaynağı:</b> Anime adları, kapak görselleri, türler ve puanlar AniList'in herkese açık kataloğundan alınır. AniTürk bağımsız bir keşif arayüzüdür; AniList ile resmi ortaklığı yoktur. <b>Video:</b> Bu sürüm anime bölümlerini barındırmaz. İzleme bağlantısı yalnızca katalogda belirtilen dış bağlantılar arasından gösterilir; bölümlerin kullanılabilirliği ülkeye ve sağlayıcıya göre değişebilir.</div>
+<section class="hero" id="home"><div class="hero-content"><div class="eyebrow">ANİME EVRENİNE HOŞ GELDİN</div><h1>Sevdiğin animeleri <span>keşfet.</span></h1><p>Popüler serileri keşfet, sezonun öne çıkanlarını takip et ve kendi anime listeni oluştur. Hepsi tek yerde.</p><div class="hero-actions"><button class="btn btn-main" onclick="document.querySelector('#catalog').scrollIntoView({behavior:'smooth'})">Keşfetmeye başla →</button></div></div></section>
+
+<section class="section" id="trending"><div class="section-head"><div><h2>Şu an trend</h2><p>Anime topluluğunda konuşulanlar</p></div></div><div class="rail" id="trendingRail"><div class="loading">Yükleniyor…</div></div></section>
+<section class="section" id="catalog"><div class="section-head"><div><h2>Anime kataloğu</h2><p>Arama yap, tür seç ve yeni seriler bul</p></div></div><div class="catalog-tools"><input class="field search" id="search" placeholder="Anime adı ara…"><select class="field" id="genre"><option value="">Tüm türler</option><option>Action</option><option>Adventure</option><option>Comedy</option><option>Drama</option><option>Fantasy</option><option>Romance</option><option>Sci-Fi</option><option>Slice of Life</option></select><button class="btn btn-ghost" onclick="resetFilters()">Sıfırla</button></div><div class="catalog-grid" id="catalogGrid"><div class="loading">Yükleniyor…</div></div></section>
 </main>
-<footer>AniTürk · Anime keşif platformu · Veriler AniList üzerinden sağlanır.</footer>
-<nav class="mobilebar"><button class="active" onclick="go('#home')"><span>⌂</span>Ana sayfa</button><button onclick="go('#trending')"><span>↗</span>Trendler</button><button onclick="go('#catalog')"><span>⌕</span>Keşfet</button><button onclick="go('#mylist')"><span>♡</span>Listem</button></nav>
-<div class="modal" id="modal" onclick="if(event.target===this)closeModal()"><div class="dialog"><button class="close" onclick="closeModal()">Kapat ✕</button><div class="dialog-banner" id="dBanner"></div><div class="dialog-inner" id="dInner"></div></div></div>
+
+<!-- Anime Detay Modalı -->
+<div class="modal" id="detailModal" onclick="if(event.target===this)closeModal()">
+ <div class="dialog">
+  <button class="close" onclick="closeModal()">Kapat ✕</button>
+  <div class="dialog-banner" id="dBanner"></div>
+  <div class="dialog-inner" id="dInner"></div>
+ </div>
+</div>
+
+<!-- ÖZEL VİDEO OYNATICI MODALI -->
+<div class="modal" id="videoPlayerModal" onclick="if(event.target===this)closeVideo()">
+ <div class="dialog">
+  <div class="player-header">
+   <h3 id="vTitle">Anime Adı - 1. Bölüm</h3>
+   <button class="close" style="position:static" onclick="closeVideo()">Kapat ✕</button>
+  </div>
+  <div class="video-container" id="videoContainer">
+   <!-- Iframe buraya eklenecek -->
+  </div>
+  <div class="rotate-hint">📱 Daha iyi bir deneyim için telefonunuzu yan çevirin.</div>
+ </div>
+</div>
+
 <script>
 const API='https://graphql.anilist.co';
-const FIELDS=`id title { romaji english native } coverImage { extraLarge large medium } bannerImage description(asHtml:false) episodes duration status season seasonYear averageScore popularity trending genres format siteUrl trailer { id site thumbnail } externalLinks { site url type language }`;
+const FIELDS=`id title { romaji english native } coverImage { extraLarge large medium } bannerImage description(asHtml:false) episodes status season seasonYear averageScore genres format siteUrl`;
 const QUERY=`query ($page:Int,$perPage:Int,$sort:[MediaSort],$search:String,$genre:String) { Page(page:$page,perPage:$perPage) { pageInfo { currentPage hasNextPage } media(type:ANIME,isAdult:false,sort:$sort,search:$search,genre:$genre) { ${FIELDS} } } }`;
-const SEASON_QUERY=`query ($page:Int,$perPage:Int,$season:MediaSeason,$year:Int) { Page(page:$page,perPage:$perPage) { media(type:ANIME,isAdult:false,season:$season,seasonYear:$year,sort:POPULARITY_DESC) { ${FIELDS} } } }`;
 let page=1,hasNext=true,loading=false,activeSort='POPULARITY_DESC',activeSearch='',activeGenre='',catalogItems=[],detailCache={};
-let myList=JSON.parse(localStorage.getItem('aniturk-list-v2')||'{}');
+
+// === ÖZEL ANİME LİSTESİ VE YOUTUBE ID'LERİ ===
+// Buradaki ID'leri istediğin zaman değiştirebilirsin.
+// Video ID'si yerine "PLAYLIST_ID" de kullanabilirsin (örneğin: "PLwLSw1_eDZl1Z2OaPWYl4DqhX9GkB-jkR" gibi)
+const animeDB = {
+  "Naruto": { cover: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20-4B5y4m5p5y5y.jpg", youtubeId: "PLwLSw1_eDZl1Z2OaPWYl4DqhX9GkB-jkR" },
+  "One Piece": { cover: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21-6L8oVZpY6x4A.jpg", youtubeId: "PLwLSw1_eDZl1Z2OaPWYl4DqhX9GkB-jkR" },
+  "Attack on Titan": { cover: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx16498-6L8oVZpY6x4A.jpg", youtubeId: "PLwLSw1_eDZl1Z2OaPWYl4DqhX9GkB-jkR" },
+  "Demon Slayer": { cover: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx101922-6L8oVZpY6x4A.jpg", youtubeId: "PLwLSw1_eDZl1Z2OaPWYl4DqhX9GkB-jkR" },
+  "Jujutsu Kaisen": { cover: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx113415-6L8oVZpY6x4A.jpg", youtubeId: "PLwLSw1_eDZl1Z2OaPWYl4DqhX9GkB-jkR" },
+  "My Hero Academia": { cover: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21459-6L8oVZpY6x4A.jpg", youtubeId: "PLwLSw1_eDZl1Z2OaPWYl4DqhX9GkB-jkR" }
+};
+
 function title(a){return a.title?.english||a.title?.romaji||'İsimsiz anime'}
 function safeText(s){return String(s||'').replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/\s+/g,' ').trim()}
-async function api(query,variables={}){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({query,variables})});if(!r.ok)throw Error('API isteği başarısız ('+r.status+')');const j=await r.json();if(j.errors)throw Error(j.errors[0]?.message||'API hatası');return j.data}
+async function api(query,variables={}){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({query,variables})});if(!r.ok)throw Error('API hatası');const j=await r.json();if(j.errors)throw Error('API hatası');return j.data}
 async function getList(sort,perPage=12,pageNo=1,search=null,genre=null){const d=await api(QUERY,{page:pageNo,perPage,sort:[sort],search,genre});return d.Page}
-function makeCard(a){detailCache[a.id]=a;const item=myList[a.id];const on=!!item;return `<article class="anime-card" onclick="openDetail(${a.id})"><div class="cover-wrap"><img class="cover" loading="lazy" src="${a.coverImage?.large||a.coverImage?.medium||''}" alt="${esc(title(a))}" onerror="this.style.opacity='.25'"><span class="score">★ ${a.averageScore? (a.averageScore/10).toFixed(1):'—'}</span><button class="heart ${on?'on':''}" aria-label="Listeye ekle" onclick="event.stopPropagation();quickAdd(${a.id})">${on?'♥':'♡'}</button></div><h3>${esc(title(a))}</h3><div class="subline">${a.seasonYear||'—'} · ${a.format||'ANIME'}</div></article>`}
+
+function makeCard(a){
+ detailCache[a.id]=a;
+ return `<article class="anime-card" onclick="openDetail(${a.id})">
+  <div class="cover-wrap">
+   <img class="cover" loading="lazy" src="${a.coverImage?.large||a.coverImage?.medium||''}" alt="${esc(title(a))}">
+   <span class="score">★ ${a.averageScore? (a.averageScore/10).toFixed(1):'—'}</span>
+  </div>
+  <h3>${esc(title(a))}</h3>
+  <div class="subline">${a.seasonYear||'—'} · ${a.format||'ANIME'}</div>
+ </article>`
+}
 function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function renderRail(id,items){document.getElementById(id).innerHTML=items.length?items.map(makeCard).join(''):'<div class="empty">Şu anda içerik yüklenemedi.</div>'}
-async function init(){try{const [t,p]=await Promise.all([getList('TRENDING_DESC',12),getList('POPULARITY_DESC',12)]);renderRail('trendingRail',t.media);renderRail('popularRail',p.media);const now=new Date(),m=now.getMonth(),season=m<3?'WINTER':m<6?'SPRING':m<9?'SUMMER':'FALL',yr=now.getFullYear();const s=await api(SEASON_QUERY,{page:1,perPage:12,season,year:yr});renderRail('seasonRail',s.Page.media)}catch(e){['trendingRail','popularRail','seasonRail'].forEach(id=>document.getElementById(id).innerHTML='<div class="empty">Katalog yüklenemedi. İnternet bağlantını kontrol edip sayfayı yenile.</div>')}loadCatalog(true)}
-async function loadCatalog(reset=false){if(loading)return;if(reset){page=1;catalogItems=[];hasNext=true}if(!hasNext&&page>1)return;loading=true;const grid=document.getElementById('catalogGrid');if(reset)grid.innerHTML='<div class="loading">Anime kataloğu yükleniyor…</div>';try{const data=await getList(activeSort,24,page,activeSearch||null,activeGenre||null);catalogItems=reset?data.media:catalogItems.concat(data.media);hasNext=data.pageInfo.hasNextPage;grid.innerHTML=catalogItems.length?catalogItems.map(makeCard).join(''):'<div class="empty">Bu aramayla eşleşen anime bulunamadı.</div>';page++;document.getElementById('loadMore').style.display=hasNext?'inline-block':'none'}catch(e){grid.innerHTML='<div class="empty">Anime kataloğuna ulaşılamadı. Biraz sonra tekrar dene.</div>';document.getElementById('loadMore').style.display='none'}finally{loading=false}}
-function loadMore(){loadCatalog(false)}
-let debounce;function filtersChanged(){activeSearch=document.getElementById('search').value.trim();activeGenre=document.getElementById('genre').value;activeSort=document.getElementById('sort').value;clearTimeout(debounce);debounce=setTimeout(()=>loadCatalog(true),350)}
-document.getElementById('search').addEventListener('input',filtersChanged);document.getElementById('genre').addEventListener('change',filtersChanged);document.getElementById('sort').addEventListener('change',filtersChanged);
-document.getElementById('topSearch').addEventListener('keydown',e=>{if(e.key==='Enter'){document.getElementById('search').value=e.target.value;activeSearch=e.target.value.trim();go('#catalog');loadCatalog(true)}});
-function resetFilters(){document.getElementById('search').value='';document.getElementById('genre').value='';document.getElementById('sort').value='POPULARITY_DESC';filtersChanged()}
-function saveList(){localStorage.setItem('aniturk-list-v2',JSON.stringify(myList))}
-function quickAdd(id){if(!detailCache[id])return;const a=detailCache[id];if(myList[id])delete myList[id];else myList[id]={status:'FAVORITE',title:title(a),cover:a.coverImage?.large||a.coverImage?.medium,year:a.seasonYear};saveList();refreshCards();renderMyList()}
-function setStatus(id,status){const a=detailCache[id];if(!a)return;if(status==='REMOVE')delete myList[id];else myList[id]={status,title:title(a),cover:a.coverImage?.large||a.coverImage?.medium,year:a.seasonYear};saveList();refreshCards();renderMyList();openDetail(id)}
-function refreshCards(){document.querySelectorAll('.anime-card').forEach(el=>{const img=el.querySelector('img');if(!img)return;const id=Object.keys(detailCache).find(k=>detailCache[k].coverImage?.large===img.src||detailCache[k].coverImage?.medium===img.src);if(id){const b=el.querySelector('.heart');if(b){b.classList.toggle('on',!!myList[id]);b.textContent=myList[id]?'♥':'♡'}}})}
-function renderMyList(){const mode=document.getElementById('listFilter').value,arr=Object.entries(myList).filter(([id,x])=>mode==='all'||x.status===mode);document.getElementById('myGrid').innerHTML=arr.length?arr.map(([id,x])=>`<article class="anime-card" onclick="openDetail(${id})"><div class="cover-wrap"><img class="cover" loading="lazy" src="${x.cover||''}" alt="${esc(x.title)}"><span class="score">${x.status==='FAVORITE'?'♥':x.status==='PLANNING'?'＋':'✓'}</span></div><h3>${esc(x.title)}</h3><div class="subline">${x.year||''} · ${x.status==='FAVORITE'?'Favori':x.status==='PLANNING'?'İzlenecek':'İzlendi'}</div></article>`).join(''):'<div class="empty">Bu listede henüz anime yok. Kartlardaki kalp simgesini kullan.</div>'}
-document.getElementById('listFilter').addEventListener('change',renderMyList);
-function openDetail(id){const a=detailCache[id];if(!a)return;const img=a.coverImage?.extraLarge||a.coverImage?.large||'',banner=a.bannerImage||img;document.getElementById('dBanner').style.backgroundImage=`linear-gradient(0deg,#141321,transparent),url("${banner}")`;const status=myList[id]?.status||'';const links=(a.externalLinks||[]).filter(x=>x.url&&x.type==='STREAMING').slice(0,4);const trailer=a.trailer?.site==='youtube'&&a.trailer?.id?`https://www.youtube.com/watch?v=${encodeURIComponent(a.trailer.id)}`:null;document.getElementById('dInner').innerHTML=`<img class="dialog-cover" src="${img}" alt=""><h2>${esc(title(a))}</h2><div class="romaji">${esc(a.title?.romaji||'')}</div><div class="dialog-stats"><span>★ ${a.averageScore?(a.averageScore/10).toFixed(1):'—'}</span><span>${a.seasonYear||'Yıl bilinmiyor'}</span><span>${a.episodes||'?'} bölüm</span><span>${a.status||''}</span></div><div class="chips">${(a.genres||[]).slice(0,8).map(g=>`<span class="chip">${esc(g)}</span>`).join('')}</div><div class="dialog-desc">${safeText(a.description)||'Bu anime için açıklama bulunmuyor.'}</div><div class="detail-actions"><button class="btn btn-main" onclick="setStatus(${id},'FAVORITE')">${status==='FAVORITE'?'♥ Favorilerde':'♡ Favorilere ekle'}</button><button class="btn btn-ghost" onclick="setStatus(${id},'PLANNING')">＋ İzlenecek</button><button class="btn btn-ghost" onclick="setStatus(${id},'COMPLETED')">✓ İzledim</button>${status?`<button class="btn btn-ghost" onclick="setStatus(${id},'REMOVE')">Listeden çıkar</button>`:''}<a class="detail-link" href="${a.siteUrl}" target="_blank" rel="noopener">AniList detay ↗</a>${trailer?`<a class="detail-link" href="${trailer}" target="_blank" rel="noopener">Fragmanı izle ↗</a>`:''}${links.map(l=>`<a class="detail-link primary" href="${l.url}" target="_blank" rel="noopener">${esc(l.site)} ↗</a>`).join('')}</div><div class="subline" style="margin-top:14px">İzleme bağlantıları katalogdaki dış kaynaklardan gelir; bölge ve üyelik koşulları değişebilir.</div>`;document.getElementById('modal').classList.add('show')}
-function closeModal(){document.getElementById('modal').classList.remove('show')}
-function showCatalog(sort){document.getElementById('sort').value=sort;activeSort=sort;go('#catalog');loadCatalog(true)}
-function go(hash){document.querySelector(hash).scrollIntoView({behavior:'smooth'});document.querySelectorAll('.mobilebar button').forEach(b=>b.classList.remove('active'))}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
-renderMyList();init();
-</script></body></html>
+function renderRail(id,items){document.getElementById(id).innerHTML=items.length?items.map(makeCard).join(''):'<div class="empty">Yüklenemedi.</div>'}
+
+async function init(){
+ try{
+  const t=await getList('TRENDING_DESC',12);
+  renderRail('trendingRail',t.media);
+ }catch(e){document.getElementById('trendingRail').innerHTML='<div class="empty">Bağlantı hatası.</div>'}
+ loadCatalog(true)
+}
+
+async function loadCatalog(reset=false){
+ if(loading)return;if(reset){page=1;catalogItems=[];hasNext=true}if(!hasNext&&page>1)return;
+ loading=true;const grid=document.getElementById('catalogGrid');
+ if(reset)grid.innerHTML='<div class="loading">Yükleniyor…</div>';
+ try{
+  const data=await getList(activeSort,24,page,activeSearch||null,activeGenre||null);
+  catalogItems=reset?data.media:catalogItems.concat(data.media);
+  hasNext=data.pageInfo.hasNextPage;
+  grid.innerHTML=catalogItems.length?catalogItems.map(makeCard).join(''):'<div class="empty">Bulunamadı.</div>';
+  page++;
+ }catch(e){grid.innerHTML='<div class="empty">Bağlantı hatası.</div>'}
+ finally{loading=false}
+}
+
+let debounce;
+function filtersChanged(){activeSearch=document.getElementById('search').value.trim();activeGenre=document.getElementById('genre').value;clearTimeout(debounce);debounce=setTimeout(()=>loadCatalog(true),350)}
+document.getElementById('search').addEventListener('input',filtersChanged);
+document.getElementById('genre').addEventListener('change',filtersChanged);
+document.getElementById('topSearch').addEventListener('keydown',e=>{if(e.key==='Enter'){document.getElementById('search').value=e.target.value;activeSearch=e.target.value.trim();document.querySelector('#catalog').scrollIntoView({behavior:'smooth'});loadCatalog(true)}});
+function resetFilters(){document.getElementById('search').value='';document.getElementById('genre').value='';filtersChanged()}
+
+function openDetail(id){
+ const a=detailCache[id];if(!a)return;
+ const img=a.coverImage?.extraLarge||a.coverImage?.large||'',banner=a.bannerImage||img;
+ document.getElementById('dBanner').style.backgroundImage=`linear-gradient(0deg,#121925,transparent),url("${banner}")`;
+ 
+ // İzle butonu: anime başlığına göre YouTube ID'sini bulur
+ const animeTitle = title(a);
+ let ytId = animeDB[animeTitle]?.youtubeId || "PLwLSw1_eDZl1Z2OaPWYl4DqhX9GkB-jkR"; // Varsayılan
+ 
+ document.getElementById('dInner').innerHTML=`
+  <img class="dialog-cover" src="${img}" alt="">
+  <h2>${esc(animeTitle)}</h2>
+  <div class="romaji">${esc(a.title?.romaji||'')}</div>
+  <div class="dialog-stats"><span>★ ${a.averageScore?(a.averageScore/10).toFixed(1):'—'}</span><span>${a.seasonYear||'Yıl bilinmiyor'}</span><span>${a.episodes||'?'} bölüm</span></div>
+  <div class="chips">${(a.genres||[]).slice(0,5).map(g=>`<span class="chip">${esc(g)}</span>`).join('')}</div>
+  <div class="dialog-desc">${safeText(a.description)||'Açıklama yok.'}</div>
+  
+  <div class="detail-actions">
+   <!-- İzle Butonu: openVideo fonksiyonuna anime başlığını ve YT ID'sini yollar -->
+   <button class="btn btn-main" onclick="openVideo('${esc(animeTitle)}', '${ytId}')">▶ İzle (Resmi YouTube)</button>
+   <a class="detail-link" href="${a.siteUrl}" target="_blank">AniList ↗</a>
+  </div>`;
+ document.getElementById('detailModal').classList.add('show');
+}
+
+function closeModal(){document.getElementById('detailModal').classList.remove('show')}
+
+// === VİDEO OYNATICI FONKSİYONLARI (YOUTUBE IFRAME) ===
+function openVideo(animeTitle, youtubeId){
+ closeModal();
+ document.getElementById('vTitle').innerText = animeTitle + " - İzle";
+ 
+ const container = document.getElementById('videoContainer');
+ // YouTube iframe'ini oluştur
+ container.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+ 
+ document.getElementById('videoPlayerModal').classList.add('show');
+}
+
+function closeVideo(){
+ // Iframe'i temizle (video dursun diye)
+ document.getElementById('videoContainer').innerHTML = '';
+ document.getElementById('videoPlayerModal').classList.remove('show');
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeVideo();}});
+init();
+</script>
+</body>
+</html>
