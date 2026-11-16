@@ -82,15 +82,14 @@ button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-deco
 .ep-name{font-weight:600;font-size:14px; word-break: break-word;}
 .ep-sub{font-size:12px;color:#93c5fd;margin-top:4px;display:flex;gap:10px}
 
-/* === VİDEO OYNATICI (IFRAME DESTEKLİ) === */
-#videoPlayerModal .dialog{width:100%; max-width: 1100px; background:#000;border:1px solid #333;overflow:hidden; margin: auto;}
-.player-header{display:flex;justify-content:space-between;align-items: center; padding:16px 24px;background:#0f1521;border-bottom:1px solid #1e293b; flex-wrap: wrap; gap: 10px;}
-.player-header h3{font-size: 16px; margin:0; word-break: break-word;}
-.video-container{position:relative;width:100%;padding-top:56.25%;background:#000}
-.video-container video, .video-container iframe {
-  position:absolute;top:0;left:0;width:100%;height:100%;
-  outline:none; border:none; background: #000;
-}
+/* === YÖNLENDİRME EKRANI (SİMSİYAH EKRAN YERİNE) === */
+#videoPlayerModal .dialog{width:100%; max-width: 600px; background:#0f1521;border:1px solid #34445b;overflow:hidden; margin: auto;}
+.player-header{display:flex;justify-content:space-between;align-items: center; padding:16px 24px;background:#0f1521;border-bottom:1px solid #1e293b;}
+.redirect-container{padding: 40px 20px; text-align: center;}
+.redirect-container h3 { margin-top: 0; font-size: 20px; color: #fff;}
+.redirect-container p { color: #94a3b8; font-size: 14px; margin-bottom: 25px;}
+.btn-redirect { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, #f97316, #ea580c); color: white; font-weight: bold; font-size: 16px; padding: 15px 30px; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 15px rgba(234, 88, 12, 0.4); transition: 0.3s;}
+.btn-redirect:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(234, 88, 12, 0.6); }
 
 /* === ALT BAR (PROFİL) === */
 .mobilebar{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:25;background:#10101cf5;border-top:1px solid var(--line);padding:10px 20px;justify-content:space-between;align-items:center;backdrop-filter:blur(16px)}
@@ -173,15 +172,20 @@ button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-deco
  </div>
 </div>
 
-<!-- VİDEO OYNATICI -->
+<!-- YÖNLENDİRME MODALI -->
 <div class="modal" id="videoPlayerModal" onclick="if(event.target===this)closeVideo()">
  <div class="dialog">
   <div class="player-header">
    <h3 id="vTitle">Anime Adı</h3>
    <button class="close" style="position:static" onclick="closeVideo()">Kapat ✕</button>
   </div>
-  <div class="video-container" id="playerContainer">
-   <!-- Iframe dinamik olarak buraya eklenecek -->
+  <div class="redirect-container">
+    <h3>Harici Kaynak</h3>
+    <p>Bu bölüm Animecix üzerinde yayınlanıyor. İzlemek için aşağıdaki butona tıklayarak yeni sekmede açabilirsin.</p>
+    <a id="redirectLink" href="#" target="_blank" class="btn-redirect">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+      Animecix'te İzle
+    </a>
   </div>
  </div>
 </div>
@@ -245,25 +249,24 @@ const FIELDS=`id title { romaji english native } coverImage { extraLarge large m
 const QUERY=`query ($page:Int,$perPage:Int,$sort:[MediaSort],$search:String) { Page(page:$page,perPage:$perPage) { media(type:ANIME,isAdult:false,sort:$sort,search:$search) { ${FIELDS} } } }`;
 let detailCache={};
 
-// === GERÇEK ANİME VERİTABANI (TÜM BÖLÜMLER ANIMECIX'TEN) ===
+// === GERÇEK ANİME VERİTABANI ===
 const animeDB = {
   "Chainsaw Man": [
-    { name: "1. Bölüm: Dog & Chainsaw", iframe: "https://animecix.tv/titles/11884/chainsaw-man/season/1/episode/1" },
-    { name: "2. Bölüm: Arrival in Tokyo", iframe: "https://animecix.tv/titles/11884/season/1/episode/2" },
-    { name: "3. Bölüm: Meowy's Whereabouts", iframe: "https://animecix.tv/titles/11884/season/1/episode/3" },
-    { name: "4. Bölüm: Rescue", iframe: "https://animecix.tv/titles/11884/chainsaw-man/season/1/episode/4" },
-    { name: "5. Bölüm: Gun Devil", iframe: "https://animecix.tv/titles/11884/season/1/episode/5" },
-    { name: "6. Bölüm: Kill Denji", iframe: "https://animecix.tv/titles/11884/season/1/episode/6" },
-    { name: "7. Bölüm: The Taste of a Kiss", iframe: "https://animecix.tv/titles/11884/season/1/episode/7" },
-    { name: "8. Bölüm: Gunfire", iframe: "https://animecix.tv/titles/11884/season/1/episode/8" },
-    { name: "9. Bölüm: From Kyoto", iframe: "https://animecix.tv/titles/11884/season/1/episode/9" },
-    { name: "10. Bölüm: Bruised & Battered", iframe: "https://animecix.tv/titles/11884/season/1/episode/10" },
-    { name: "11. Bölüm: Rescue Mission", iframe: "https://animecix.tv/titles/11884/season/1/episode/11" },
-    { name: "12. Bölüm: Katana Man", iframe: "https://animecix.tv/titles/11884/season/1/episode/12" }
+    { name: "1. Bölüm: Dog & Chainsaw", link: "https://animecix.tv/titles/11884/chainsaw-man/season/1/episode/1" },
+    { name: "2. Bölüm: Arrival in Tokyo", link: "https://animecix.tv/titles/11884/season/1/episode/2" },
+    { name: "3. Bölüm: Meowy's Whereabouts", link: "https://animecix.tv/titles/11884/season/1/episode/3" },
+    { name: "4. Bölüm: Rescue", link: "https://animecix.tv/titles/11884/chainsaw-man/season/1/episode/4" },
+    { name: "5. Bölüm: Gun Devil", link: "https://animecix.tv/titles/11884/season/1/episode/5" },
+    { name: "6. Bölüm: Kill Denji", link: "https://animecix.tv/titles/11884/season/1/episode/6" },
+    { name: "7. Bölüm: The Taste of a Kiss", link: "https://animecix.tv/titles/11884/season/1/episode/7" },
+    { name: "8. Bölüm: Gunfire", link: "https://animecix.tv/titles/11884/season/1/episode/8" },
+    { name: "9. Bölüm: From Kyoto", link: "https://animecix.tv/titles/11884/season/1/episode/9" },
+    { name: "10. Bölüm: Bruised & Battered", link: "https://animecix.tv/titles/11884/season/1/episode/10" },
+    { name: "11. Bölüm: Rescue Mission", link: "https://animecix.tv/titles/11884/season/1/episode/11" },
+    { name: "12. Bölüm: Katana Man", link: "https://animecix.tv/titles/11884/season/1/episode/12" }
   ]
 };
 
-// AniList'ten gelen başlığı veritabanımızdaki başlıkla eşleştirir
 function findAnimeInDB(anilistTitle) {
   const cleanTitle = anilistTitle.toLowerCase().trim();
   for (let key in animeDB) {
@@ -312,7 +315,6 @@ async function initApp(){
   }catch(e){ console.log(e); }
 }
 
-// === 3. DETAY VE BÖLÜMLER ===
 function openDetail(id){
  const a=detailCache[id];
  const img=a.coverImage?.extraLarge||a.coverImage?.large||'',banner=a.bannerImage||img;
@@ -379,14 +381,14 @@ function openEpisodes(animeTitle){
 
 function closeEpisodes(){document.getElementById('episodesModal').classList.remove('show')}
 
-// === 4. VİDEO OYNATMA (IFRAME) ===
+// === 4. YÖNLENDİRME FONKSİYONU ===
 function playVideo(animeTitle, episodeIndex){
   const episodesData = findAnimeInDB(animeTitle);
   if(!episodesData || !episodesData[episodeIndex]) return;
   
   const episode = episodesData[episodeIndex];
   
-  if(episode.iframe.includes("BURAYA_")) {
+  if(episode.link.includes("BURAYA_")) {
     alert("Aga bu bölümün linki henüz eklenmemiş!");
     return;
   }
@@ -399,23 +401,14 @@ function playVideo(animeTitle, episodeIndex){
 
   document.getElementById('vTitle').innerText = animeTitle + " - " + episode.name;
   
-  const container = document.getElementById('playerContainer');
+  // Butonun linkini ayarla
+  document.getElementById('redirectLink').href = episode.link;
   
-  // Iframe oluştur
-  container.innerHTML = `
-    <iframe 
-      src="${episode.iframe}" 
-      allow="autoplay; fullscreen; encrypted-media" 
-      allowfullscreen>
-    </iframe>
-  `;
-  
+  // Modalı aç
   document.getElementById('videoPlayerModal').classList.add('show');
 }
 
 function closeVideo(){
-  // Iframe'i temizle (sesin arka planda devam etmesini engeller)
-  document.getElementById('playerContainer').innerHTML = '';
   document.getElementById('videoPlayerModal').classList.remove('show');
 }
 </script>
